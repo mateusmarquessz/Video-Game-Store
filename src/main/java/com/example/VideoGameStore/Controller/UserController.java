@@ -3,6 +3,7 @@ package com.example.VideoGameStore.Controller;
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.UsersRepository;
 import com.example.VideoGameStore.Service.UserService;
+import org.hibernate.sql.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +37,20 @@ public class UserController {
     public ResponseEntity<Users> createUser(@RequestBody Users user) {
         Users CreateUser = userService.CreateUser(user);
         return ResponseEntity.ok(CreateUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Users> deleteUser(@PathVariable long id) {
+        return  userService.deleteUser(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Users> updateUser(@PathVariable long id, @RequestBody Users user) {
+        Users updatedUser = userService.updateUser(id, user);
+        if (updatedUser != null) {
+            return ResponseEntity.ok(updatedUser);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

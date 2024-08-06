@@ -4,6 +4,7 @@ package com.example.VideoGameStore.Service;
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -36,7 +37,24 @@ public class UserService {
     }
 
     //Deleta Usuario pelo Id
-    public void deleteUser(long userId){
+    public ResponseEntity<Users> deleteUser(long userId){
         UsersRepository.deleteById(userId);
+        return null;
+    }
+
+    //Update Usuario pelo Id
+
+    public Users updateUser(long id, Users user) {
+        Optional<Users> existingUser = UsersRepository.findById(id);
+        if (existingUser.isPresent()) {
+            Users updatedUser = existingUser.get();
+            updatedUser.setUsername(user.getUsername());
+            updatedUser.setPassword(user.getPassword());
+            // Update other fields as necessary
+            updatedUser.setUpdatedAt(LocalDateTime.now());
+            return UsersRepository.save(updatedUser);
+        } else {
+            return null;
+        }
     }
 }

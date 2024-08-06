@@ -5,6 +5,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Game {
         @Id
@@ -47,5 +49,12 @@ public class Game {
 
         public void setPrice(Double price) {
                 this.price = price;
+        }
+
+        public void setCreatedAt(LocalDateTime now) {
+        }
+
+        public void setUpdatedAt(LocalDateTime now) {
+
         }
 }
