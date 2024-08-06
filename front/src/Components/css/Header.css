@@ -1,0 +1,41 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    color: #9a9a9a;
+}
+
+.navigation {
+    display: flex;
+  }
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-item {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+.header nav ul li:hover {
+    color: #e58e27;
+}
+
+.icons {
+    display: flex;
+    gap: 15px;
+    color: #9a9a9a;
+}
+
+.icons i {
+    transition: color 0.3s ease;
+    font-size: 1.5rem;
+}
+
+.icons i:hover {
+    color: #e58e27;
+}

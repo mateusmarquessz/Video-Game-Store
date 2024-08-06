@@ -1,12 +1,15 @@
+import React from 'react';
+import Header from './Components/Header';
 import './App.css';
-import Formulario from './Tabela';
-import Tabela from './Formulario';
+import Sidebar from './Components/Sidebar';
 
 function App() {
   return (
     <div className="App">
-      <Formulario/>
-      <Tabela />
+      <Header />
+      <div className="content">
+        <Sidebar />
+      </div>
     </div>
   );
 }
