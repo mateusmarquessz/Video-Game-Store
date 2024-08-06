@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     private final UserService userService;
@@ -22,7 +23,7 @@ public class UserController {
         this.usersRepository = usersRepository;
     }
 
-    @GetMapping()
+    @GetMapping("/listar")
    public ResponseEntity<List<Users>> getUsers() {
         var users = userService.getAllUsers();
         return ResponseEntity.ok(users);

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/gamekeys")
+@CrossOrigin(origins = "*")
 public class GameKeyController {
     @Autowired
     private GameKeyService gameKeyService;
