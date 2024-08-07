@@ -1,0 +1,45 @@
+.main-content {
+  padding: 20px;
+}
+
+.featured-game {
+  margin-bottom: 20px;
+}
+
+.game-thumbnails {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.thumbnail img {
+  width: 100px;
+  height: auto;
+  display: block;
+}
+
+.add-game-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 300px;
+}
+
+.add-game-form input {
+  padding: 8px;
+  font-size: 16px;
+}
+
+.add-game-form button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #e58e27;
+  color: #161a1e;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-game-form button:hover {
+  background-color: #ddd4ca;
+}

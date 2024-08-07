@@ -56,6 +56,7 @@ public class GameService {
             Game updatedGame = existingGame.get();
             updatedGame.setName(game.getName());
             updatedGame.setGenre(game.getGenre());
+            updatedGame.setTypeOfSupport(game.getTypeOfSupport());
             updatedGame.setPrice(game.getPrice());
             updatedGame.setUpdatedAt(LocalDateTime.now());
             return gameRepository.save(updatedGame);

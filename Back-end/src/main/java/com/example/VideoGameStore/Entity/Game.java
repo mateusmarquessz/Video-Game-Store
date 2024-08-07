@@ -15,10 +15,26 @@ public class Game {
 
         private String name;
         private String genre;
+        private String typeOfSupport;
         private Double price;
+        private String imageUrl;
+
 
         // Getters and setters
+        public String getImageUrl() {
+                return imageUrl;
+        }
 
+        public void setImageUrl(String imageUrl) {
+                this.imageUrl = imageUrl;
+        }
+        public String getTypeOfSupport() {
+                return typeOfSupport;
+        }
+
+        public void setTypeOfSupport(String typeOfSupport) {
+                this.typeOfSupport = typeOfSupport;
+        }
         public Long getId() {
                 return id;
         }
