@@ -42,7 +42,6 @@ public class UserService {
             throw new IllegalArgumentException("User already exists");
         }
 
-        // Adicione validação de email aqui se necessário
         Optional<Users> existingEmail = UsersRepository.findByEmail(user.getEmail());
         if (existingEmail.isPresent()) {
             throw new IllegalArgumentException("Email already exists.");
@@ -51,7 +50,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
         user.setCreatedAt(LocalDateTime.now());
-        user.setUpdatedAt(LocalDateTime.now());
         return UsersRepository.save(user);
     }
 
