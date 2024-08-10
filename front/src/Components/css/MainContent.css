@@ -12,6 +12,10 @@
   margin-bottom: 20px;
 }
 
+.addgame{
+  background-color: #e58e27;
+  color: #161a1e;
+}
 .thumbnail img {
   width: 100px;
   height: auto;
@@ -42,4 +46,11 @@
 
 .add-game-form button:hover {
   background-color: #ddd4ca;
+}
+
+.game-image {
+  width: 100px;
+  height: auto;
+  display: block;
+  margin-top: 10px;
 }

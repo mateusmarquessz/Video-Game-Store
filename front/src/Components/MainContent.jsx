@@ -8,7 +8,8 @@ function MainContent({ filters }) {
     name: '',
     genre: '',
     typeOfSupport: '',
-    price: ''
+    price: '',
+    image: null
   });
 
   useEffect(() => {
@@ -32,14 +33,26 @@ function MainContent({ filters }) {
   const handleAddGame = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/games', newGame);
+      const formData = new FormData();
+      formData.append('name', newGame.name);
+      formData.append('genre', newGame.genre);
+      formData.append('typeOfSupport', newGame.typeOfSupport);
+      formData.append('price', newGame.price);
+      if (newGame.image) {
+        formData.append('image', newGame.image);
+      }
+      
+      const response = await axios.post('http://localhost:8080/games', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+  
       setGames(prevGames => [...prevGames, response.data]);
-      setNewGame({ name: '', genre: '', typeOfSupport: '', price: '' });
+      setNewGame({ name: '', genre: '', typeOfSupport: '', price: '', image: null });
     } catch (error) {
       console.error("There was an error adding the game!", error);
     }
   };
-
+  
   const handleDeleteGame = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/games/${id}`);
@@ -49,16 +62,33 @@ function MainContent({ filters }) {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+  
+    reader.onloadend = () => {
+      setNewGame(prevGame => ({
+        ...prevGame,
+        image: reader.result
+      }));
+    };
+  
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <main className="main-content">
       <div className="game-thumbnails">
         {games.map((game) => (
           <div className="thumbnail" key={game.id}>
+            {game.image && <img src={game.image} alt={game.name} className="game-image" />}
             <h3>{game.name}</h3>
             <p>Gênero: {game.genre}</p>
             <p>Suporte: {game.typeOfSupport}</p>
             <p>Preço: R${game.price.toFixed(2)}</p>
-            <button onClick={() => handleDeleteGame(game.id)}>Excluir</button>
+            <button className='addgame'onClick={() => handleDeleteGame(game.id)}>Excluir</button>
           </div>
         ))}
       </div>
@@ -95,6 +125,11 @@ function MainContent({ filters }) {
           onChange={handleChange}
           placeholder="Preço"
           required
+        />
+        <input
+          type="file"
+          name="image"
+          onChange={handleImageChange}
         />
         <button type="submit">Adicionar Jogo</button>
       </form>
