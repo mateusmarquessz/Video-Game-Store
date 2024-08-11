@@ -1,9 +1,7 @@
 package com.example.VideoGameStore.Service;
 
 import com.example.VideoGameStore.Entity.Game;
-import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.GameRepository;
-import com.example.VideoGameStore.Resource.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

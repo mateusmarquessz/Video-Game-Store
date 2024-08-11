@@ -35,23 +35,6 @@ public class UserService {
         return UsersRepository.findById(id);
     }
 
-    //Cria Usuario
-    public Users CreateUser(Users user) {
-        Optional<Users> usersOptional = UsersRepository.findByUsername(user.getUsername());
-        if (usersOptional.isPresent()) {
-            throw new IllegalArgumentException("User already exists");
-        }
-
-        Optional<Users> existingEmail = UsersRepository.findByEmail(user.getEmail());
-        if (existingEmail.isPresent()) {
-            throw new IllegalArgumentException("Email already exists.");
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("ROLE_USER");
-        user.setCreatedAt(LocalDateTime.now());
-        return UsersRepository.save(user);
-    }
 
     //Deleta Usuario pelo Id
     public ResponseEntity<Users> deleteUser(long userId){
