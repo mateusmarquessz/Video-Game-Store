@@ -9,6 +9,7 @@ import MainContent from './Components/MainContent';
 import './App.css';
 
 function App() {
+  //Mudar isso muda as rotas
   const isAuthenticated = true; 
 
   return (
