@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/MainContent.css';
 
-function MainContent({ filters }) {
+function MainContent({ isAuthenticated }) {
   const [games, setGames] = useState([]);
   const [newGame, setNewGame] = useState({
     name: '',
@@ -15,7 +15,8 @@ function MainContent({ filters }) {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/games', { params: filters });
+       const token = localStorage.getItem("token");
+        const response = await axios.get('http://localhost:8080/games', {headers: {'Authorization': `Bearer ${token}`}});
         setGames(response.data);
       } catch (error) {
         console.error("There was an error fetching the games!", error);
@@ -23,7 +24,7 @@ function MainContent({ filters }) {
     };
     
     fetchGames();
-  }, [filters]);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,6 +33,8 @@ function MainContent({ filters }) {
 
   const handleAddGame = async (e) => {
     e.preventDefault();
+    if (!isAuthenticated) return; // Do nothing if not authenticated
+
     try {
       const formData = new FormData();
       formData.append('name', newGame.name);
@@ -42,20 +45,33 @@ function MainContent({ filters }) {
         formData.append('image', newGame.image);
       }
       
+      const token = localStorage.getItem('token'); // Retrieve the JWT token
+
       const response = await axios.post('http://localhost:8080/games', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}` // Add the token to the header
+        }
       });
-  
+
       setGames(prevGames => [...prevGames, response.data]);
       setNewGame({ name: '', genre: '', typeOfSupport: '', price: '', image: null });
     } catch (error) {
       console.error("There was an error adding the game!", error);
     }
   };
-  
+
   const handleDeleteGame = async (id) => {
+    if (!isAuthenticated) return;
+
     try {
-      await axios.delete(`http://localhost:8080/games/${id}`);
+      const token = localStorage.getItem('token'); // Retrieve the JWT token
+
+      await axios.delete(`http://localhost:8080/games/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}` // Add the token to the header
+        }
+      });
       setGames(prevGames => prevGames.filter(game => game.id !== id));
     } catch (error) {
       console.error("There was an error deleting the game!", error);
@@ -88,51 +104,53 @@ function MainContent({ filters }) {
             <p>Gênero: {game.genre}</p>
             <p>Suporte: {game.typeOfSupport}</p>
             <p>Preço: R${game.price.toFixed(2)}</p>
-            <button className='addgame'onClick={() => handleDeleteGame(game.id)}>Excluir</button>
+            {isAuthenticated && <button className='addgame' onClick={() => handleDeleteGame(game.id)}>Excluir</button>}
           </div>
         ))}
       </div>
-      <form className="add-game-form" onSubmit={handleAddGame}>
-        <h3>Adicionar Novo Jogo</h3>
-        <input
-          type="text"
-          name="name"
-          value={newGame.name}
-          onChange={handleChange}
-          placeholder="Nome do jogo"
-          required
-        />
-        <input
-          type="text"
-          name="genre"
-          value={newGame.genre}
-          onChange={handleChange}
-          placeholder="Gênero"
-          required
-        />
-        <input
-          type="text"
-          name="typeOfSupport"
-          value={newGame.typeOfSupport}
-          onChange={handleChange}
-          placeholder="Tipo de Suporte"
-          required
-        />
-        <input
-          type="number"
-          name="price"
-          value={newGame.price}
-          onChange={handleChange}
-          placeholder="Preço"
-          required
-        />
-        <input
-          type="file"
-          name="image"
-          onChange={handleImageChange}
-        />
-        <button type="submit">Adicionar Jogo</button>
-      </form>
+      {isAuthenticated && (
+        <form className="add-game-form" onSubmit={handleAddGame}>
+          <h3>Adicionar Novo Jogo</h3>
+          <input
+            type="text"
+            name="name"
+            value={newGame.name}
+            onChange={handleChange}
+            placeholder="Nome do jogo"
+            required
+          />
+          <input
+            type="text"
+            name="genre"
+            value={newGame.genre}
+            onChange={handleChange}
+            placeholder="Gênero"
+            required
+          />
+          <input
+            type="text"
+            name="typeOfSupport"
+            value={newGame.typeOfSupport}
+            onChange={handleChange}
+            placeholder="Tipo de Suporte"
+            required
+          />
+          <input
+            type="number"
+            name="price"
+            value={newGame.price}
+            onChange={handleChange}
+            placeholder="Preço"
+            required
+          />
+          <input
+            type="file"
+            name="image"
+            onChange={handleImageChange}
+          />
+          <button type="submit">Adicionar Jogo</button>
+        </form>
+      )}
     </main>
   );
 }

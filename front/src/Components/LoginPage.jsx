@@ -3,25 +3,29 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios'; // Se estiver usando Axios
 import './css/LoginPage.css';
 
-const LoginPage = () => {
+const LoginPage = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [error, setError] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
       // Enviando dados para o back end
-      const response = await axios.post('http://localhost:8080/users/login', {
+      const response = await axios.post("http://localhost:8080/auth/login", {
         email,
         password,
       });
 
+      localStorage.setItem("token", response.data.token);
+      
       console.log('Login successful:', response.data);
-      // Redirecionar após o login bem-sucedido
-      navigate('/'); // Redirecione para a página desejada após o login
+      onLoginSuccess(); // Chama a função passada por props
+      navigate('/'); // Redirecionar após o login bem-sucedido
     } catch (error) {
       console.error('There was an error logging in:', error);
+      setError('Email ou senha inválidos.'); 
       // Adicione tratamento de erro, como exibir uma mensagem ao usuário
     }
   };
@@ -54,6 +58,7 @@ const LoginPage = () => {
             required
           />
         </div>
+        {error && <div className="error-message">{error}</div>}
         <button type="submit" id='login' className='login-button'>Login</button>
       </form>
       <button onClick={handleRegisterRedirect} className="register-button">

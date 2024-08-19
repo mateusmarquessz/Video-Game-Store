@@ -8,12 +8,11 @@ const RegisterPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       // Enviando dados para o back end
-      const response = await axios.post('http://localhost:8080/users/register', {
+      const response = await axios.post("http://localhost:8080/auth/register", {
         username,
         email,
         password,

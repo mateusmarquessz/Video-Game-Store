@@ -1,5 +1,5 @@
 // src/App.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Header from './Components/Header';
 import LoginPage from './Components/LoginPage';
@@ -9,16 +9,17 @@ import MainContent from './Components/MainContent';
 import './App.css';
 
 function App() {
-  //Mudar isso muda as rotas
-  const isAuthenticated = true; 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
+  };
 
   return (
     <Router>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-
+        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={<RegisterPage />} />
-
         <Route
           path="/"
           element={
@@ -27,7 +28,7 @@ function App() {
                 <Header />
                 <div className="content">
                   <Sidebar />
-                  <MainContent />
+                  <MainContent isAuthenticated={isAuthenticated} />
                 </div>
               </div>
             ) : (
