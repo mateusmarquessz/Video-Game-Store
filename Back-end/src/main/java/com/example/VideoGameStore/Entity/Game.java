@@ -19,7 +19,6 @@ public class Game {
         private Double price;
         private String imageUrl;
 
-
         // Getters and setters
         public String getImageUrl() {
                 return imageUrl;

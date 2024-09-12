@@ -94,4 +94,16 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(params = {"category", "platform"})
+    public ResponseEntity<List<Game>> getAllGames(
+            @RequestParam(required = false) List<String> category,
+            @RequestParam(required = false) List<String> platform,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice
+    ) {
+        List<Game> games = gameService.getFilteredGames(category, platform, minPrice, maxPrice);
+        return new ResponseEntity<>(games, HttpStatus.OK);
+    }
+
 }

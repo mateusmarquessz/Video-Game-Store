@@ -61,4 +61,9 @@ public class GameService {
             return null;
         }
     }
+
+    // Método para buscar jogos com filtros
+    public List<Game> getFilteredGames(List<String> categories, List<String> platforms, Double minPrice, Double maxPrice) {
+        return gameRepository.findGamesByFilters(categories, platforms, minPrice, maxPrice);
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.VideoGameStore.Controller;
 
 import com.example.VideoGameStore.Service.FileService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,16 +22,21 @@ public class FileController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.ok("Arquivo Criado com Sucesso");
+        try {
+            fileService.saveFile(file);
+            return new ResponseEntity<>("Arquivo Criado com Sucesso", HttpStatus.CREATED);
+        } catch (IOException e) {
+            return new ResponseEntity<>("Erro ao salvar o arquivo.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/file")
-    public String getFile(@RequestParam String filename) {
+    public ResponseEntity<String> getFile(@RequestParam String filename) {
         try {
-            return fileService.getFileAsBase64(filename);
+            String base64File = fileService.getFileAsBase64(filename);
+            return ResponseEntity.ok(base64File);
         } catch (IOException e) {
-            e.printStackTrace();
-            return "Erro ao recuperar o arquivo.";
+            return new ResponseEntity<>("Erro ao recuperar o arquivo.", HttpStatus.NOT_FOUND);
         }
     }
 }

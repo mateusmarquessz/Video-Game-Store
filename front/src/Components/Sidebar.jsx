@@ -1,3 +1,4 @@
+// Sidebar.jsx
 import React, { useState } from 'react';
 import './css/Sidebar.css';
 
@@ -33,8 +34,16 @@ function Sidebar({ onFilterChange }) {
   };
 
   const applyFilters = () => {
-    // Chama a função do componente pai para aplicar filtros
-    onFilterChange({ categories, platforms, priceRange });
+    console.log('Aplicar Filtros:', {
+      categories,
+      platforms,
+      priceRange
+    });
+    onFilterChange({
+      categories,
+      platforms,
+      priceRange
+    });
   };
 
   return (

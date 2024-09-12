@@ -5,7 +5,8 @@ import Header from './Components/Header';
 import LoginPage from './Components/LoginPage';
 import RegisterPage from './Components/RegisterPage';
 import Sidebar from './Components/Sidebar';
-import MainContent from './Components/MainContent';
+import AdminPage from './Components/AdminPage';
+import UserPage from './Components/UserPage';
 import './App.css';
 
 function App() {
@@ -27,8 +28,7 @@ function App() {
               <div className="App">
                 <Header />
                 <div className="content">
-                  <Sidebar />
-                  <MainContent isAuthenticated={isAuthenticated} />
+                  <UserPage isAuthenticated={isAuthenticated} />
                 </div>
               </div>
             ) : (
