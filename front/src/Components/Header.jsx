@@ -20,7 +20,7 @@ function Header() {
             <Link to="/">Home</Link>
           </li>
           <li className="nav-item">
-            <Link to="/game-store">Game Store</Link>
+            <Link to="/gamestore">Game Store</Link>
           </li>
           <li className="nav-item">
             <Link to="/news">News</Link>
@@ -39,12 +39,6 @@ function Header() {
                 >
                   Cart
                 </button>
-                <button
-                  className={`tab-button ${activeTab === 'favorites' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('favorites')}
-                >
-                  Favorites
-                </button>
               </div>
               <div className="tab-content">
                 {activeTab === 'cart' ? (
@@ -57,11 +51,7 @@ function Header() {
                   </>
                 ) : (
                   <>
-                    <h4>Your Favorites</h4>
-                    <p>Favorite Game 1</p>
-                    <p>Favorite Game 2</p>
-                    <p>Favorite Game 3</p>
-                    {/* Coloque aqui a lógica para exibir os favoritos reais */}
+                    
                   </>
                 )}
               </div>
@@ -79,12 +69,6 @@ function Header() {
                 >
                   Favorites
                 </button>
-                <button
-                  className={`tab-button ${activeTab === 'cart' ? 'active' : ''}`}
-                  onClick={() => setActiveTab('cart')}
-                >
-                  Cart
-                </button>
               </div>
               <div className="tab-content">
                 {activeTab === 'favorites' ? (
@@ -97,11 +81,7 @@ function Header() {
                   </>
                 ) : (
                   <>
-                    <h4>Your Cart</h4>
-                    <p>Game 1</p>
-                    <p>Game 2</p>
-                    <p>Game 3</p>
-                    {/* Coloque aqui a lógica para exibir os jogos reais no carrinho */}
+                    
                   </>
                 )}
               </div>
@@ -110,7 +90,7 @@ function Header() {
         </div>
         <div className="icon">
           <Link to="/UserPage">
-            <i><FiUser /></i>
+            <i><FiUser/></i>
           </Link>
         </div>
       </div>

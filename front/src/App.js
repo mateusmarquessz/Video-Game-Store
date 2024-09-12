@@ -4,9 +4,11 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Header from './Components/Header';
 import LoginPage from './Components/LoginPage';
 import RegisterPage from './Components/RegisterPage';
-import Sidebar from './Components/Sidebar';
 import AdminPage from './Components/AdminPage';
+import MainPage from './Components/MainPage';
 import UserPage from './Components/UserPage';
+import NewsPage from './Components/NewsPage';
+import HomePage from './Components/HomePage';
 import './App.css';
 
 function App() {
@@ -28,7 +30,7 @@ function App() {
               <div className="App">
                 <Header />
                 <div className="content">
-                  <UserPage isAuthenticated={isAuthenticated} />
+                  <AdminPage isAuthenticated={isAuthenticated} />
                 </div>
               </div>
             ) : (
@@ -36,6 +38,9 @@ function App() {
             )
           }
         />
+        <Route path="/GameStore" element={<MainPage />} />
+        <Route path="/UserPage" element={<UserPage />} />
+        <Route path="/news" element={<NewsPage />} />
       </Routes>
     </Router>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/MainContent.css';
+import Sidebar from './Sidebar';
 
 function MainContent({ isAuthenticated }) {
   const [games, setGames] = useState([]);
@@ -95,6 +96,8 @@ function MainContent({ isAuthenticated }) {
   };
 
   return (
+    <>
+    <Sidebar/>
     <main className="main-content">
       <div className="game-thumbnails">
         {games.map((game) => (
@@ -152,6 +155,7 @@ function MainContent({ isAuthenticated }) {
         </form>
       )}
     </main>
+    </>
   );
 }
 

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/MainContent.css';
 import Sidebar from './Sidebar';
+import Header from './Header'; 
 
 function UserPage() {
   const [games, setGames] = useState([]);
@@ -53,6 +54,8 @@ function UserPage() {
 
   return (
     <>
+      <Header /> {/* Renderize o Header aqui */}
+      <div className='content'>
       <div className="main-content">
         <Sidebar onFilterChange={handleFilterChange} />
       </div>
@@ -65,6 +68,7 @@ function UserPage() {
             <p>{game.price.toFixed(2)}</p>
           </div>
         ))}
+      </div>
       </div>
     </>
   );
