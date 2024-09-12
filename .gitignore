@@ -353,3 +353,14 @@ front/node_modules/react-router/README.md
 front/package-lock.json
 front/package.json
 front/src/App.js
+front/node_modules/react-native/React/I18n/strings/ko.lproj/Localizable.strings
+/front/node_modules
+/front/node_modules
+/front/node_modules/.cache
+/front/node_modules/.cache/default-development
+/front/node_modules/.cache
+front/node_modules/.cache/.eslintcache
+front/node_modules/.cache/default-development/0.pack
+front/node_modules/.cache/default-development/1.pack
+front/package-lock.json
+front/package.json
