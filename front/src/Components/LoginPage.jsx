@@ -12,7 +12,6 @@ const LoginPage = ({ onLoginSuccess }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      // Enviando dados para o back end
       const response = await axios.post("http://localhost:8080/auth/login", {
         email,
         password,
@@ -21,12 +20,11 @@ const LoginPage = ({ onLoginSuccess }) => {
       localStorage.setItem("token", response.data.token);
       
       console.log('Login successful:', response.data);
-      onLoginSuccess(); // Chama a função passada por props
-      navigate('/'); // Redirecionar após o login bem-sucedido
+      onLoginSuccess();
+      navigate('/');
     } catch (error) {
       console.error('There was an error logging in:', error);
       setError('Email ou senha inválidos.'); 
-      // Adicione tratamento de erro, como exibir uma mensagem ao usuário
     }
   };
 

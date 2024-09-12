@@ -1,72 +1,65 @@
-// UserPage.jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './css/MainContent.css';
-import Sidebar from './Sidebar';
+import React, { useState } from 'react';
+import "./css/UserPage.css";
 
 function UserPage() {
-  const [games, setGames] = useState([]);
-  const [filters, setFilters] = useState({
-    categories: [],
-    platforms: [],
-    priceRange: { min: '', max: '' }
+  const [editMode, setEditMode] = useState(false);
+  const [userData, setUserData] = useState({
+    name: "Julia Silva",
+    email: "julia@example.com",
+    bio: "Desenvolvedora apaixonada por tecnologia e inovação.",
   });
 
-  useEffect(() => {
-    const fetchGames = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const query = new URLSearchParams();
+  const handleEdit = () => {
+    setEditMode(!editMode);
+  };
 
-        // Append filters to the query string if they are not empty
-        if (filters.categories.length) {
-          filters.categories.forEach((category) => query.append('category', category));
-        }
-        if (filters.platforms.length) {
-          filters.platforms.forEach((platform) => query.append('platform', platform));
-        }
-        if (filters.priceRange.min) {
-          query.append('minPrice', filters.priceRange.min);
-        }
-        if (filters.priceRange.max) {
-          query.append('maxPrice', filters.priceRange.max);
-        }
-
-        console.log('Fetching games with query:', query.toString());
-
-        const response = await axios.get(`http://localhost:8080/games?${query.toString()}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        setGames(response.data);
-      } catch (error) {
-        console.error("There was an error fetching the games!", error);
-      }
-    };
-
-    fetchGames();
-  }, [filters]);
-
-  const handleFilterChange = (newFilters) => {
-    console.log('Filter changed:', newFilters);
-    setFilters(newFilters);
+  const handleChange = (e) => {
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
 
   return (
-    <>
-      <div className="main-content">
-        <Sidebar onFilterChange={handleFilterChange} />
+    <div className="user-page">
+      <div className="profile-header">
+        <img
+          src=""
+          alt="User"
+          className="profile-image"
+        />
+        <h1>{userData.name}</h1>
+        <button onClick={handleEdit} className="edit-button">
+          {editMode ? "Save" : "Edit"}
+        </button>
       </div>
-      <div className="game-thumbnails">
-        {games.map((game, index) => (
-          <div className="thumbnails" key={index}>
-            {game.image && <img src={game.image} alt={game.name} className="game-image" />}
-            <h3>{game.name}</h3>
-            <p>{game.typeOfSupport}</p>
-            <p>{game.price.toFixed(2)}</p>
-          </div>
-        ))}
+      <div className="profile-details">
+        <div className="profile-info">
+          <label>
+            Email:
+            {editMode ? (
+              <input
+                type="email"
+                name="email"
+                value={userData.email}
+                onChange={handleChange}
+              />
+            ) : (
+              <p>{userData.email}</p>
+            )}
+          </label>
+          <label>
+            Bio:
+            {editMode ? (
+              <textarea
+                name="bio"
+                value={userData.bio}
+                onChange={handleChange}
+              />
+            ) : (
+              <p>{userData.bio}</p>
+            )}
+          </label>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
 
