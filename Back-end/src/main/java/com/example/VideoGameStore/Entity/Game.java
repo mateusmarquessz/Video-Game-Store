@@ -1,9 +1,6 @@
 package com.example.VideoGameStore.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
@@ -17,9 +14,15 @@ public class Game {
         private String genre;
         private String typeOfSupport;
         private Double price;
+
+        @Transient
         private String imageUrl;
 
+        @Lob
+        private byte[] image;
+
         // Getters and setters
+
         public String getImageUrl() {
                 return imageUrl;
         }
@@ -27,6 +30,15 @@ public class Game {
         public void setImageUrl(String imageUrl) {
                 this.imageUrl = imageUrl;
         }
+
+        public byte[] getImage(){
+                return image;
+        }
+
+        public void setImage(byte[] image){
+                this.image = image;
+        }
+
         public String getTypeOfSupport() {
                 return typeOfSupport;
         }

@@ -364,3 +364,4 @@ front/node_modules/.cache/default-development/0.pack
 front/node_modules/.cache/default-development/1.pack
 front/package-lock.json
 front/package.json
+/front/node_modules/.cache/default-development

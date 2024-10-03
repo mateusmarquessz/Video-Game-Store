@@ -1,11 +1,14 @@
 package com.example.VideoGameStore.Service;
 
 import com.example.VideoGameStore.Entity.Game;
+import com.example.VideoGameStore.Image.ImageUtils;
 import com.example.VideoGameStore.Repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -19,24 +22,34 @@ public class GameService {
         this.gameRepository = gameRepository;
     }
 
-    //Cria Jogo
-    public Game createGame (Game game){
-        return gameRepository.save(game);
-    }
-
-    //Lista todos os jogos
+    // Método para retornar todos os jogos com imagem em base64
     public List<Game> getAllGames() {
-        return gameRepository.findAll();
+        List<Game> games = gameRepository.findAll();
+        for (Game game : games) {
+            if (game.getImage() != null) {
+                String base64Image = ImageUtils.convertToBase64String(game.getImage());
+                game.setImageUrl("data:image/jpeg;base64," + base64Image); // Ajuste o tipo de imagem conforme necessário
+            }
+        }
+        return games;
     }
 
-    //Lista jogos por Id
+    // Método para retornar um jogo específico com imagem em base64
     public Game getGameById(Long id) {
-        return gameRepository.findById(id).orElseThrow();
+        Game game = gameRepository.findById(id).orElseThrow();
+        if (game.getImage() != null) {
+            String base64Image = ImageUtils.convertToBase64String(game.getImage());
+            game.setImageUrl("data:image/jpeg;base64," + base64Image); // Ajuste o tipo de imagem conforme necessário
+        }
+        return game;
     }
 
     //Cria Jogo
-    public Game CreateGame(Game game) {
+    public Game createGame(Game game, MultipartFile file) throws IOException {
         game.setCreatedAt(LocalDateTime.now());
+        if (file != null && !file.isEmpty()) {
+            game.setImage(file.getBytes());
+        }
         return gameRepository.save(game);
     }
 
@@ -47,7 +60,7 @@ public class GameService {
     }
 
     //Update jogo pelo Id
-    public Game updateGame(long id, Game game) {
+    public Game updateGame(long id, Game game, MultipartFile file) throws IOException{
         Optional<Game> existingGame = gameRepository.findById(id);
         if (existingGame.isPresent()) {
             Game updatedGame = existingGame.get();
@@ -55,6 +68,9 @@ public class GameService {
             updatedGame.setGenre(game.getGenre());
             updatedGame.setTypeOfSupport(game.getTypeOfSupport());
             updatedGame.setPrice(game.getPrice());
+            if (file != null && !file.isEmpty()) {
+                game.setImage(file.getBytes());
+            }
             updatedGame.setUpdatedAt(LocalDateTime.now());
             return gameRepository.save(updatedGame);
         } else {

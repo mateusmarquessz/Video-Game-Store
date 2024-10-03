@@ -32,8 +32,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/upload").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/file").permitAll()
                         .requestMatchers(HttpMethod.POST, "/games").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/games/**").authenticated()
                         .anyRequest().authenticated()

@@ -3,7 +3,6 @@ package com.example.VideoGameStore.Controller;
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.UsersRepository;
 import com.example.VideoGameStore.Service.UserService;
-import org.hibernate.sql.Update;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
