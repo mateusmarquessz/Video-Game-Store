@@ -1,5 +1,6 @@
 package com.example.VideoGameStore.Entity;
 
+import com.example.VideoGameStore.enun.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.Id;
