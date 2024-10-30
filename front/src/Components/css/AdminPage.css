@@ -49,17 +49,17 @@
     font-size: 16px;
   }
   
-  .add-game-form button {
+  .add-game {
     padding: 10px;
     font-size: 16px;
     background-color: #e58e27;
     color: #161a1e;
-    border: none;
+    border: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
   
-  .add-game-form button:hover {
+  .add-game:hover {
     background-color: #ddd4ca;
   }
   
@@ -75,6 +75,10 @@
     flex: 1;
   }
   
+.main-div{
+  display: flex;
+}
+
   .thumbnail h3{
     
   }

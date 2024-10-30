@@ -5,11 +5,26 @@
     padding: 1rem 2rem;
     background-color: #1c1c1c;
     color: #9a9a9a;
+    margin-bottom: 2rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .navigation {
     display: flex;
+    align-items: center;
+}
+
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #e58e27;
+    cursor: pointer;
+}
+
+.menu-toggle:hover{
+    background-color: #1c1c1c;
 }
 
 .nav-list {
@@ -20,32 +35,22 @@
     padding: 0;
 }
 
-.nav-item {
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: color 0.3s ease;
+.nav-list.open {
+    display: flex;
+    flex-direction: column;
 }
 
 .nav-item a {
     text-decoration: none;
     color: #9a9a9a;
-}
-
-.nav-item a:hover {
-    color: #e58e27;
+    font-size: 1.2rem;
 }
 
 .icons {
     display: flex;
     gap: 15px;
     color: #9a9a9a;
-}
-
-.icons {
-    display: flex;
-    gap: 15px;
-    color: #9a9a9a;
+    font-size: 1.4rem;
 }
 
 .icon i {
@@ -54,12 +59,14 @@
 }
 
 .icon a {
-    text-decoration: none; /* Remove sublinhado dos links no ícone */
-    color: inherit; /* Mantém a cor herdada dos ícones */
+    color: inherit;
+}
+.icon:hover{
+    color: #e58e27; /* Cor amarela ao passar o mouse */
 }
 
-.icon i:hover {
-    color: #e58e27; /* Muda a cor ao passar o mouse */
+.a:hover{
+    color: #e58e27; /* Cor amarela ao passar o mouse */
 }
 
 .dropdown-panel {
@@ -72,56 +79,36 @@
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     z-index: 10;
-    width: 300px; /* Ajuste conforme necessário */
+    width: 300px;
 }
-
-.tabs {
-    display: flex;
-    border-bottom: 2px solid #e58e27;
-    margin-bottom: 1rem;
-}
-
-.tab-button {
-    background: none;
-    border: none;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.tab-button.active {
-    color: #e58e27;
-    font-weight: bold;
-}
-
-.tab-content {
-    padding: 0.5rem 0;
-}
-
-.tab-content h4 {
-    margin: 0;
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.tab-content p {
-    margin: 0.5rem 0;
-    font-size: 1rem;
-    color: #333;
-}
-
-.tab-content p:hover {
-    color: #e58e27;
-    cursor: pointer;
+.dropdown-h4{
+    
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .icons {
-        gap: 10px;
-    }
     .nav-list {
-        gap: 1.5rem;
+        display: none; /* Esconde a navegação */
+    }
+
+    .menu-toggle {
+        display: block; /* Mostra o botão "hambúrguer" */
+    }
+
+    .nav-list.open {
+        display: flex; /* Exibe a navegação ao abrir o menu */
+        flex-direction: column;
+        position: absolute;
+        top: 4rem;
+        left: 1rem;
+        background-color: #1c1c1c;
+        width: 90%;
+        padding: 1rem;
+        border-radius: 5px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-item {
+        padding: 0.5rem 0;
     }
 }

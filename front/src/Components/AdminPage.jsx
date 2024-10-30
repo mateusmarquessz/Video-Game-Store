@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/AdminPage.css';
 import Sidebar from './Sidebar';
+import Header from './Header';
+import { useAuth } from './AuthContext'; // Importar o hook de autenticação
 
-function MainContent({ isAuthenticated }) {
+function MainContent() {
+  const { isAuthenticated } = useAuth(); // Obter isAuthenticated do contexto
   const [games, setGames] = useState([]);
   const [newGame, setNewGame] = useState({
     name: '',
@@ -39,7 +42,7 @@ function MainContent({ isAuthenticated }) {
   // Função para adicionar um novo jogo ao servidor
   const handleAddGame = async (e) => {
     e.preventDefault();
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) return; // Se não estiver autenticado, não deve adicionar jogos
 
     try {
       const formData = new FormData();
@@ -50,13 +53,12 @@ function MainContent({ isAuthenticated }) {
       if (newGame.image) {
         formData.append('image', newGame.image);
       }
-      
-      const token = localStorage.getItem('token'); // Retrieve the JWT token
 
+      const token = localStorage.getItem('token');
       const response = await axios.post('http://localhost:8080/games', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}` // Add the token to the header
+          'Authorization': `Bearer ${token}`
         }
       });
 
@@ -72,11 +74,11 @@ function MainContent({ isAuthenticated }) {
     if (!isAuthenticated) return;
 
     try {
-      const token = localStorage.getItem('token'); // Retrieve the JWT token
+      const token = localStorage.getItem('token');
 
       await axios.delete(`http://localhost:8080/games/${id}`, {
         headers: {
-          'Authorization': `Bearer ${token}` // Add the token to the header
+          'Authorization': `Bearer ${token}`
         }
       });
       setGames(prevGames => prevGames.filter(game => game.id !== id));
@@ -96,19 +98,25 @@ function MainContent({ isAuthenticated }) {
 
   return (
     <>
-      <Sidebar/>
+      <Header isAuthenticated={isAuthenticated} /> {/* Usando o componente de cabeçalho */}
+      <div className='main-div'>
+      <Sidebar />
       <main className="main-content">
         <div className="game-thumbnails">
-          {games.map((game) => (
-            <div className="thumbnail" key={game.id}>
-              {game.imageUrl && <img src={game.imageUrl} alt={game.name} className="game-image" />}
-              <h3>{game.name}</h3>
-              <p>Gênero: {game.genre}</p>
-              <p>Suporte: {game.typeOfSupport}</p>
-              <p>Preço: R${game.price.toFixed(2)}</p>
-              {isAuthenticated && <button className='addgame' onClick={() => handleDeleteGame(game.id)}>Excluir</button>}
-            </div>
-          ))}
+          {games.length === 0 ? (
+            <p>Nenhum jogo disponível.</p>
+          ) : (
+            games.map((game) => (
+              <div className="thumbnail" key={game.id}>
+                {game.imageUrl && <img src={game.imageUrl} alt={game.name} className="game-image" />}
+                <h3>{game.name}</h3>
+                <p>Gênero: {game.genre}</p>
+                <p>Suporte: {game.typeOfSupport}</p>
+                <p>Preço: R${game.price.toFixed(2)}</p>
+                {isAuthenticated && <button className='delete-game' onClick={() => handleDeleteGame(game.id)}>Excluir</button>}
+              </div>
+            ))
+          )}
         </div>
         {isAuthenticated && (
           <form className="add-game-form" onSubmit={handleAddGame}>
@@ -150,10 +158,11 @@ function MainContent({ isAuthenticated }) {
               name="image"
               onChange={handleImageChange}
             />
-            <button type="submit">Adicionar Jogo</button>
+            <button type="submit" className='add-game'>Adicionar Jogo</button>
           </form>
         )}
       </main>
+      </div>
     </>
   );
 }

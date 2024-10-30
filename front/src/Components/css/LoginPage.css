@@ -2,6 +2,7 @@
     max-width: 400px;
     margin: auto;
     padding: 20px;
+    background-color: #1c1c1c;
     border: 1px solid #ccc;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -33,21 +34,28 @@
     border-radius: 4px;
   }
   
-  button {
-    padding: 10px;
-    background-color: #007bff;
+  .login-button {
+    padding: 10px 15px;
     border: none;
-    color: #fff;
     border-radius: 4px;
+    color: #fff;
+    background-color: #e58e27;
+    font-size: 16px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin: auto;
+    display: block;
   }
   
   .login{
     padding-right: 10px;
   }
 
-  button:hover {
-    background-color: #0056b3;
+  .login-button:hover {
+    background-color: #ddd4ca;
+    color: #161a1e;
   }
   
   .login-button, .register-button {

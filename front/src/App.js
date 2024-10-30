@@ -10,6 +10,7 @@ import UserPage from './Components/UserPage';
 import NewsPage from './Components/NewsPage';
 import HomePage from './Components/HomePage';
 import './App.css';
+import { AuthProvider } from './Components/AuthContext';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,17 +20,19 @@ function App() {
   };
 
   return (
+    <AuthProvider>
     <Router>
       <Routes>
+        <Route path="/" element={<HomePage />} /> {/* Rota inicial agora exibe HomePage */}
         <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
-          path="/"
+          path="/admin"
           element={
             isAuthenticated ? (
               <div className="App">
                 <Header />
-                <div className="content">
+                <div className="content"> 
                   <AdminPage isAuthenticated={isAuthenticated} />
                 </div>
               </div>
@@ -43,6 +46,7 @@ function App() {
         <Route path="/news" element={<NewsPage />} />
       </Routes>
     </Router>
+    </AuthProvider>
   );
 }
 

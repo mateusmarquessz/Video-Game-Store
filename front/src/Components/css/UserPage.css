@@ -81,3 +81,19 @@
   display: flex;
   flex: 1;
 }
+
+/* UserPage.css */
+
+.logout-button {
+  background-color: #ff4d4d; /* Cor de fundo vermelha */
+  color: white; /* Cor do texto */
+  border: none; /* Sem borda */
+  padding: 10px 20px; /* Espaçamento interno */
+  margin-left: 10px; /* Margem esquerda para espaçamento */
+  cursor: pointer; /* Muda o cursor para indicar clicável */
+  border-radius: 5px; /* Bordas arredondadas */
+}
+
+.logout-button:hover {
+  background-color: #ff1a1a; /* Muda a cor de fundo ao passar o mouse */
+}
