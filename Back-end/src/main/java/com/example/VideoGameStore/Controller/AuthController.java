@@ -2,6 +2,7 @@ package com.example.VideoGameStore.Controller;
 
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.UsersRepository;
+import com.example.VideoGameStore.Roles.Role;
 import com.example.VideoGameStore.SecurityConfig.TokenService;
 import com.example.VideoGameStore.dto.LoginRequestDTO;
 import com.example.VideoGameStore.dto.RegisterRequestDTO;
@@ -23,29 +24,39 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequestDTO body){
+    public ResponseEntity<ResponseDTO> login(@RequestBody LoginRequestDTO body) {
         Users user = this.repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
-        if(passwordEncoder.matches(body.password(), user.getPassword())) {
+        if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token));
+
+            // Retorne o papel do usuário na resposta
+            return ResponseEntity.ok(new ResponseDTO(user.getUsername(), token, user.getId(), user.getRole()));
         }
         return ResponseEntity.badRequest().build();
     }
 
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody RegisterRequestDTO body){
+    public ResponseEntity<ResponseDTO> register(@RequestBody RegisterRequestDTO body) {
         Optional<Users> user = this.repository.findByEmail(body.email());
 
-        if(user.isEmpty()) {
+        if (user.isEmpty()) {
             Users newUser = new Users();
             newUser.setPassword(passwordEncoder.encode(body.password()));
             newUser.setEmail(body.email());
             newUser.setUsername(body.username());
+
+            // Define a role padrão como ROLE_USER
+            newUser.setRole(Role.ROLE_USER);
+
             this.repository.save(newUser);
             String token = this.tokenService.generateToken(newUser);
-            return ResponseEntity.ok(new ResponseDTO(newUser.getUsername(), token));
+
+            // Adicione a role ao ResponseDTO
+            return ResponseEntity.ok(new ResponseDTO(newUser.getUsername(), token, newUser.getId(), newUser.getRole()));
         }
         return ResponseEntity.badRequest().build();
     }
+
+
 }

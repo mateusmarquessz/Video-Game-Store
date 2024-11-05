@@ -1,4 +1,4 @@
-package com.example.VideoGameStore.enun;
+package com.example.VideoGameStore.Roles;
 
 public enum Role {
     ROLE_USER,
