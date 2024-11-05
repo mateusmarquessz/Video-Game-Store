@@ -14,6 +14,9 @@ function UserPage() {
     bio: "Desenvolvedora apaixonada por tecnologia e inovação.",
   });
 
+
+
+
   const handleEdit = () => {
     setEditMode(!editMode);
   };
@@ -37,7 +40,7 @@ function UserPage() {
               src="https://via.placeholder.com/150"
               alt="User"
               className="profile-image"
-            />
+            />  
             <h1>{userData.name}</h1>
             <button onClick={handleEdit} className="edit-button">
               {editMode ? "Save" : "Edit"}

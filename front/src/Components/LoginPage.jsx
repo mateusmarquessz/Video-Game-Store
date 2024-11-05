@@ -20,10 +20,14 @@ const LoginPage = () => {
         password,
       });
 
-      localStorage.setItem("token", response.data.token);
       console.log('Login successful:', response.data);
       
-      login(response.data.token); // Atualize o estado de autenticação
+      // Atualize o estado de autenticação com token, userId e userRole
+      login(response.data.token, response.data.userId, response.data.role); // Adicione o papel aqui
+      
+      // Verifica se o papel está sendo armazenado corretamente
+      console.log('Stored role:', response.data.role); // Console log para verificar o papel
+
       navigate('/'); // Redirecione para a página inicial ou onde desejar
     } catch (error) {
       console.error('There was an error logging in:', error);

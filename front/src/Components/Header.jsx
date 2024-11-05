@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import "./css/Header.css";
 import { FiShoppingCart, FiHeart, FiUser, FiMenu } from "react-icons/fi";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
+import axios from 'axios';
 
 function Header() {
   const [showPanel, setShowPanel] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-  const { isAuthenticated } = useAuth();
+  const [favorites, setFavorites] = useState([]);
+  const { isAuthenticated, userId, userRole } = useAuth(); // Adiciona userRole
   const navigate = useNavigate();
 
   const togglePanel = (panel) => {
@@ -15,13 +17,27 @@ function Header() {
   };
 
   const handleUserIconClick = () => {
-    console.log("Authenticated:", isAuthenticated);
     navigate(isAuthenticated ? '/UserPage' : '/login');
   };
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`);
+      setFavorites(response.data);
+    } catch (error) {
+      console.error("Error fetching favorites:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchFavorites();
+    }
+  }, [isAuthenticated]); // Chama fetchFavorites sempre que a autenticação mudar
 
   return (
     <header className="header">
@@ -31,7 +47,15 @@ function Header() {
         </button>
         <ul className={`nav-list ${menuOpen ? 'open' : ''}`}>
           <li className="nav-item"><Link to="/" className='a'>Home</Link></li>
-          <li className="nav-item"><Link to="/gamestore" className='a'>Game Store</Link></li>
+          
+          {userRole === 'ROLE_ADMIN' && (
+            <li className="nav-item"><Link to="/admin" className='a'>Admin Page</Link></li>
+          )}
+
+          {userRole === 'ROLE_USER' &&(
+            <li className="nav-item"><Link to="/gamestore" className='a'>Game Store</Link></li>
+          )}
+
           <li className="nav-item"><Link to="/news" className='a'>News</Link></li>
         </ul>
       </nav>
@@ -41,7 +65,7 @@ function Header() {
           {showPanel === 'cart' && (
             <div className="dropdown-panel">
               <h4 className='dropdown-h4'>Your Cart</h4>
-              {/* Conteúdo do carrinho */}
+              {}
             </div>
           )}
         </div>
@@ -50,7 +74,15 @@ function Header() {
           {showPanel === 'favorites' && (
             <div className="dropdown-panel">
               <h4 className='dropdown-h4'>Your Favorites</h4>
-              {/* Conteúdo dos favoritos */}
+              {favorites.length > 0 ? (
+                <ul>
+                  {favorites.map(game => (
+                    <li key={game.id}>{game.name}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No favorites yet.</p>
+              )}
             </div>
           )}
         </div>

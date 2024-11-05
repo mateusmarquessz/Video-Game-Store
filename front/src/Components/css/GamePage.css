@@ -1,0 +1,59 @@
+.game-page {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1C1C1C;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .game-name{
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .game-image {
+    flex: 1; /* Faz a imagem ocupar mais espaço */
+    max-width: 600px; /* Limita a largura máxima da imagem */
+  }
+  
+  .game-image img {
+    width: 100%; /* Faz a imagem ocupar toda a largura disponível */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 8px;
+  }
+  
+  .game-details {
+    flex: 1; /* Permite que os detalhes ocupem o restante do espaço */
+    margin-left: 20px;
+  }
+  
+  .genre, .support, .price {
+    font-size: 1.2rem;
+    margin: 5px 0;
+  }
+  
+  .buy-button {
+    background-color: #e58e27; /* Cor de destaque */
+    color: #161a1e;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-top: 15px; /* Adiciona margem superior ao botão */
+    transition: background-color 0.3s ease;
+  }
+  
+  .buy-button:hover {
+    background-color: #ddd4ca; /* Cor ao passar o mouse */
+  }
+  
+  .error {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+  }
+  

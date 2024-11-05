@@ -1,6 +1,6 @@
 // src/App.jsx
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // Adicione Navigate aqui
 import Header from './Components/Header';
 import LoginPage from './Components/LoginPage';
 import RegisterPage from './Components/RegisterPage';
@@ -9,45 +9,48 @@ import MainPage from './Components/MainPage';
 import UserPage from './Components/UserPage';
 import NewsPage from './Components/NewsPage';
 import HomePage from './Components/HomePage';
+import GamePage from './Components/GamePage';
 import './App.css';
-import { AuthProvider } from './Components/AuthContext';
+import { AuthProvider, useAuth } from './Components/AuthContext';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const handleLoginSuccess = () => {
-    setIsAuthenticated(true);
-  };
-
   return (
     <AuthProvider>
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} /> {/* Rota inicial agora exibe HomePage */}
-        <Route path="/login" element={<LoginPage onLoginSuccess={handleLoginSuccess} />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route
-          path="/admin"
-          element={
-            isAuthenticated ? (
-              <div className="App">
-                <Header />
-                <div className="content"> 
-                  <AdminPage isAuthenticated={isAuthenticated} />
-                </div>
-              </div>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route path="/GameStore" element={<MainPage />} />
-        <Route path="/UserPage" element={<UserPage />} />
-        <Route path="/news" element={<NewsPage />} />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/UserPage" element={<UserPage />} />
+          <Route path="/news" element={<NewsPage />} />
+          <Route path="/game/:id" element={<GamePage />} />
+          <Route path="/admin" element={<AdminPageWrapper />} />
+          <Route path="/GameStore" element={<GameStore />} />
+        </Routes>
+      </Router>
     </AuthProvider>
   );
 }
+
+// Componente para gerenciar o acesso à GameStore
+const GameStore = () => {
+  const { userRole } = useAuth(); // Acessa o papel do usuário do contexto
+
+  return (
+    <div className="App">
+      <Header />
+      <div className="content">
+        {userRole === 'ROLE_ADMIN' ? <AdminPage /> : <MainPage />}
+      </div>
+    </div>
+  );
+};
+
+// Componente para a página admin
+const AdminPageWrapper = () => {
+  const { userRole } = useAuth();
+  
+  return userRole === 'ROLE_ADMIN' ? <AdminPage /> : <Navigate to="/" />;
+};
 
 export default App;

@@ -1,7 +1,6 @@
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
 
-
 .main-content {
   padding: 20px;
   display: flex;
@@ -20,8 +19,8 @@
   flex-wrap: wrap;
 }
 
-.thumbnail{
-  background-color: #1C1C1C;
+.thumbnail {
+  background-color: #221F1C;
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -37,7 +36,7 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.addgame{
+.addgame {
   background-color: #e58e27;
   color: #161a1e;
 }
@@ -61,18 +60,20 @@
   color: #161a1e;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .add-game-form button:hover {
   background-color: #ddd4ca;
+  transform: translateY(-3px);
 }
 
 .game-image {
   width: 200px;
   height: auto;
-  margin-top: 10px;
+  margin-top: 24px;
   border-radius: 10px;
+  object-fit: cover;
 }
 
 .content {
@@ -80,18 +81,37 @@
   flex: 1;
 }
 
-.thumbnail h3{
+.view-game-button{
+  display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #e58e27;
+    color: #161a1e;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: background-color 0.3s ease;
+}
+  .view-game-button:hover {
+    background-color: #ddd4ca;
+  }
   
+
+/* Estilos de texto para os elementos de miniatura */
+.thumbnail h3, .thumbnail p {
+  margin: 10px 0;
+  color: #fff;
+  text-align: center;
 }
 
-.thumbnail p{
-
+.game-price {
+  margin-top: 5px;
+  font-weight: bold;
+  color: #f39c12;
+  font-size: 1.1em;
 }
-
-.game-price{
-  
-}
-
 
 /* MainContent.css */
 .carousel-container {
@@ -115,9 +135,19 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* Estilos para o botão de favoritos */
+.favorite-button {
+  font-size: 30px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute; /* Coloca o botão no canto superior direito */
+  top: 5px;
+  right: -1px;
+  transition: transform 0.2s ease;
+}
 
-
-.game-price {
-  font-weight: bold;
-  color: #f39c12;
+.favorite-button:hover {
+  color: #e58e27;
+  transform: scale(1.1);
 }

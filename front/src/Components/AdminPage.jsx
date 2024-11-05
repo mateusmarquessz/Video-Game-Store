@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import { useAuth } from './AuthContext'; // Importar o hook de autenticação
 
-function MainContent() {
+function AdminPage() {
   const { isAuthenticated } = useAuth(); // Obter isAuthenticated do contexto
   const [games, setGames] = useState([]);
   const [newGame, setNewGame] = useState({
@@ -98,7 +98,7 @@ function MainContent() {
 
   return (
     <>
-      <Header isAuthenticated={isAuthenticated} /> {/* Usando o componente de cabeçalho */}
+      <Header/> {/* Usando o componente de cabeçalho */}
       <div className='main-div'>
       <Sidebar />
       <main className="main-content">
@@ -167,4 +167,4 @@ function MainContent() {
   );
 }
 
-export default MainContent;
+export default AdminPage;
