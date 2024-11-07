@@ -37,6 +37,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/games").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/games/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/{userId}/favorites/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/users/profile/").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/users/{userId}/bio").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/{userId}/profile-image").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

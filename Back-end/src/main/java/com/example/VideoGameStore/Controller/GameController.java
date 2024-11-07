@@ -20,27 +20,6 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    // Criação de Jogo com upload de imagem
-    @PostMapping
-    public ResponseEntity<Game> createGame(@RequestParam("name") String name,
-                                           @RequestParam("genre") String genre,
-                                           @RequestParam("typeOfSupport") String typeOfSupport,
-                                           @RequestParam("price") Double price,
-                                           @RequestParam("image") MultipartFile file) {
-        try {
-            Game game = new Game();
-            game.setName(name);
-            game.setGenre(genre);
-            game.setTypeOfSupport(typeOfSupport);
-            game.setPrice(price);
-            Game createdGame = gameService.createGame(game, file);
-            return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     // Método para converter byte[] para String base64
     private String convertToBase64String(byte[] imageBytes) {
         return Base64.getEncoder().encodeToString(imageBytes);
@@ -77,6 +56,27 @@ public class GameController {
     public ResponseEntity<Void> deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    // Criação de Jogo com upload de imagem
+    @PostMapping
+    public ResponseEntity<Game> createGame(@RequestParam("name") String name,
+                                           @RequestParam("genre") String genre,
+                                           @RequestParam("typeOfSupport") String typeOfSupport,
+                                           @RequestParam("price") Double price,
+                                           @RequestParam("image") MultipartFile file) {
+        try {
+            Game game = new Game();
+            game.setName(name);
+            game.setGenre(genre);
+            game.setTypeOfSupport(typeOfSupport);
+            game.setPrice(price);
+            Game createdGame = gameService.createGame(game, file);
+            return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     // Atualiza jogo pelo ID com opção de atualizar a imagem

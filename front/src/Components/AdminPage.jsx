@@ -62,6 +62,7 @@ function AdminPage() {
         }
       });
 
+      // Adicione o novo jogo com a URL da imagem diretamente ao estado `games`
       setGames(prevGames => [...prevGames, response.data]);
       setNewGame({ name: '', genre: '', typeOfSupport: '', price: '', image: null });
     } catch (error) {
@@ -100,68 +101,68 @@ function AdminPage() {
     <>
       <Header/> {/* Usando o componente de cabeçalho */}
       <div className='main-div'>
-      <Sidebar />
-      <main className="main-content">
-        <div className="game-thumbnails">
-          {games.length === 0 ? (
-            <p>Nenhum jogo disponível.</p>
-          ) : (
-            games.map((game) => (
-              <div className="thumbnail" key={game.id}>
-                {game.imageUrl && <img src={game.imageUrl} alt={game.name} className="game-image" />}
-                <h3>{game.name}</h3>
-                <p>Gênero: {game.genre}</p>
-                <p>Suporte: {game.typeOfSupport}</p>
-                <p>Preço: R${game.price.toFixed(2)}</p>
-                {isAuthenticated && <button className='delete-game' onClick={() => handleDeleteGame(game.id)}>Excluir</button>}
-              </div>
-            ))
+        <Sidebar />
+        <main className="main-content">
+          <div className="game-thumbnails">
+            {games.length === 0 ? (
+              <p>Nenhum jogo disponível.</p>
+            ) : (
+              games.map((game) => (
+                <div className="thumbnail" key={game.id}>
+                  {game.imageUrl && <img src={game.imageUrl} alt={game.name} className="game-image" />}
+                  <h3>{game.name}</h3>
+                  <p>Gênero: {game.genre}</p>
+                  <p>Suporte: {game.typeOfSupport}</p>
+                  <p>Preço: R${game.price.toFixed(2)}</p>
+                  {isAuthenticated && <button className='delete-game' onClick={() => handleDeleteGame(game.id)}>Excluir</button>}
+                </div>
+              ))
+            )}
+          </div>
+          {isAuthenticated && (
+            <form className="add-game-form" onSubmit={handleAddGame}>
+              <h3>Adicionar Novo Jogo</h3>
+              <input
+                type="text"
+                name="name"
+                value={newGame.name}
+                onChange={handleChange}
+                placeholder="Nome do jogo"
+                required
+              />
+              <input
+                type="text"
+                name="genre"
+                value={newGame.genre}
+                onChange={handleChange}
+                placeholder="Gênero"
+                required
+              />
+              <input
+                type="text"
+                name="typeOfSupport"
+                value={newGame.typeOfSupport}
+                onChange={handleChange}
+                placeholder="Tipo de Suporte"
+                required
+              />
+              <input
+                type="number"
+                name="price"
+                value={newGame.price}
+                onChange={handleChange}
+                placeholder="Preço"
+                required
+              />
+              <input
+                type="file"
+                name="image"
+                onChange={handleImageChange}
+              />
+              <button type="submit" className='add-game'>Adicionar Jogo</button>
+            </form>
           )}
-        </div>
-        {isAuthenticated && (
-          <form className="add-game-form" onSubmit={handleAddGame}>
-            <h3>Adicionar Novo Jogo</h3>
-            <input
-              type="text"
-              name="name"
-              value={newGame.name}
-              onChange={handleChange}
-              placeholder="Nome do jogo"
-              required
-            />
-            <input
-              type="text"
-              name="genre"
-              value={newGame.genre}
-              onChange={handleChange}
-              placeholder="Gênero"
-              required
-            />
-            <input
-              type="text"
-              name="typeOfSupport"
-              value={newGame.typeOfSupport}
-              onChange={handleChange}
-              placeholder="Tipo de Suporte"
-              required
-            />
-            <input
-              type="number"
-              name="price"
-              value={newGame.price}
-              onChange={handleChange}
-              placeholder="Preço"
-              required
-            />
-            <input
-              type="file"
-              name="image"
-              onChange={handleImageChange}
-            />
-            <button type="submit" className='add-game'>Adicionar Jogo</button>
-          </form>
-        )}
-      </main>
+        </main>
       </div>
     </>
   );

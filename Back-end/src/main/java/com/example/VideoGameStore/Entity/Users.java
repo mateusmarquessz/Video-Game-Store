@@ -15,6 +15,14 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
+    private byte[] profileImage;
+
+    @Transient
+    private String imageUrl;
+
+    private String fullName;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -29,22 +37,21 @@ public class Users {
     @Column(nullable = false)
     private Role role;
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
+    @Column(name = "bio")
     private String bio;
 
-    public String getBio() {
-        return bio;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users users = (Users) o;
+        return Objects.equals(id, users.id);
     }
 
-    public void setBio(String bio) {
-        this.bio = bio;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -62,6 +69,29 @@ public class Users {
     private List<Game> favorites; // Lista de jogos favoritos
 
     // Getters e setters
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public Long getId() {
         return id;
@@ -119,16 +149,19 @@ public class Users {
         this.favorites = favorites;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users users = (Users) o;
-        return Objects.equals(id, users.id);
+    public byte[] getProfileImage() {
+        return profileImage;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setProfileImage(byte[] profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

@@ -18,7 +18,6 @@ public class Game {
         @Transient
         private String imageUrl;
 
-        @Lob
         private byte[] image;
 
         // Getters and setters
@@ -46,6 +45,7 @@ public class Game {
         public void setTypeOfSupport(String typeOfSupport) {
                 this.typeOfSupport = typeOfSupport;
         }
+
         public Long getId() {
                 return id;
         }

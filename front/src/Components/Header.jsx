@@ -24,18 +24,18 @@ function Header() {
     setMenuOpen(!menuOpen);
   };
 
-  const fetchFavorites = async () => {
-    try {
-      const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`);
-      setFavorites(response.data);
-    } catch (error) {
-      console.error("Error fetching favorites:", error);
-    }
-  };
+  // const fetchFavorites = async () => {
+  //   try {
+  //     const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`);
+  //     setFavorites(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching favorites:", error);
+  //   }
+  // };
 
   useEffect(() => {
     if (isAuthenticated) {
-      fetchFavorites();
+     // fetchFavorites();
     }
   }, [isAuthenticated]); // Chama fetchFavorites sempre que a autenticação mudar
 
@@ -51,11 +51,11 @@ function Header() {
           {userRole === 'ROLE_ADMIN' && (
             <li className="nav-item"><Link to="/admin" className='a'>Admin Page</Link></li>
           )}
-
-          {userRole === 'ROLE_USER' &&(
-            <li className="nav-item"><Link to="/gamestore" className='a'>Game Store</Link></li>
+          {userRole !== 'ROLE_ADMIN' && (
+            <li className="nav-item">
+              <Link to="/gamestore" className='a'>Game Store</Link>
+            </li>
           )}
-
           <li className="nav-item"><Link to="/news" className='a'>News</Link></li>
         </ul>
       </nav>
@@ -71,7 +71,7 @@ function Header() {
         </div>
         <div className="icon" onClick={() => togglePanel('favorites')}>
           <FiHeart />
-          {showPanel === 'favorites' && (
+          {/* {showPanel === 'favorites' && (
             <div className="dropdown-panel">
               <h4 className='dropdown-h4'>Your Favorites</h4>
               {favorites.length > 0 ? (
@@ -84,7 +84,7 @@ function Header() {
                 <p>No favorites yet.</p>
               )}
             </div>
-          )}
+          )} */}
         </div>
         <div className="icon" onClick={handleUserIconClick}>
           <FiUser />

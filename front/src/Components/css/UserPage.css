@@ -12,13 +12,45 @@
   align-items: center;
   gap: 1rem;
   margin-bottom: 2rem;
+  flex-direction: column;
 }
 
-.profile-image {
+
+
+/* Container para a imagem e o botão */
+.profile-image-container {
+  position: relative;
   width: 150px;
   height: 150px;
+}
+
+/* Imagem de perfil */
+.profile-image {
+  width: 100%;
+  height: 110%;
   border-radius: 50%;
   object-fit: cover;
+}
+
+/* Botão que aparece ao passar o mouse */
+.change-image-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  cursor: pointer;
+}
+
+/* Exibir o botão ao passar o mouse sobre o container */
+.profile-image-container:hover .change-image-button {
+  opacity: 1;
 }
 
 .profile-header h1 {
@@ -29,6 +61,7 @@
 
 .edit-button {
   margin-left: auto;
+  margin-top: 2rem;
   padding: 0.5rem 1rem;
   font-size: 1rem;
   border: none;
@@ -88,7 +121,7 @@
   background-color: #ff4d4d; /* Cor de fundo vermelha */
   color: white; /* Cor do texto */
   border: none; /* Sem borda */
-  padding: 10px 20px; /* Espaçamento interno */
+  padding: 10px 10px; /* Espaçamento interno */
   margin-left: 10px; /* Margem esquerda para espaçamento */
   cursor: pointer; /* Muda o cursor para indicar clicável */
   border-radius: 5px; /* Bordas arredondadas */
