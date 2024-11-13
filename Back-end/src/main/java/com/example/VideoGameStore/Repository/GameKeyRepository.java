@@ -8,5 +8,4 @@ import java.util.List;
 @Repository
 public interface GameKeyRepository extends JpaRepository<GameKey, Long> {
 
-    List<GameKey> findByGameId(Long gameId);
 }
