@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/AdminPage.css';
-import Sidebar from './Sidebar';
 import Header from './Header';
 import { useAuth } from './AuthContext'; // Importar o hook de autenticação
 
@@ -101,7 +100,6 @@ function AdminPage() {
     <>
       <Header/> {/* Usando o componente de cabeçalho */}
       <div className='main-div'>
-        <Sidebar />
         <main className="main-content">
           <div className="game-thumbnails">
             {games.length === 0 ? (

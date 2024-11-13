@@ -47,7 +47,7 @@ function UserPage() {
 
   // Handle change in input fields
   const handleChange = (e) => {
-    setUserData({ ...userData, [e.target.name]: e.target.value });
+    setUserData({ ...userData, [e.target.name]: e.target.value });  
   };
 
   // Handle logout
@@ -93,6 +93,7 @@ function UserPage() {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
 
+    
       const updatedData = {
         username: userData.username,
         bio: userData.bio,

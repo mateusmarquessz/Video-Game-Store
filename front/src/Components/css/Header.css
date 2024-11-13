@@ -5,7 +5,6 @@
     padding: 1rem 2rem;
     background-color: #1c1c1c;
     color: #9a9a9a;
-    margin-bottom: 2rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -23,21 +22,12 @@
     cursor: pointer;
 }
 
-.menu-toggle:hover{
-    background-color: #1c1c1c;
-}
-
 .nav-list {
     list-style: none;
     display: flex;
     gap: 2rem;
     margin: 0;
     padding: 0;
-}
-
-.nav-list.open {
-    display: flex;
-    flex-direction: column;
 }
 
 .nav-item a {
@@ -53,50 +43,92 @@
     font-size: 1.4rem;
 }
 
-.icon i {
-    transition: color 0.3s ease;
-    font-size: 1.5rem;
+.icon:hover {
+    color: #e58e27;
 }
 
-.icon a {
-    color: inherit;
-}
-.icon:hover{
-    color: #e58e27; /* Cor amarela ao passar o mouse */
+.a:hover {
+    color: #e58e27;
 }
 
-.a:hover{
-    color: #e58e27; /* Cor amarela ao passar o mouse */
-}
-
+/* Estilos do dropdown */
 .dropdown-panel {
     position: absolute;
-    top: 4rem;
-    right: 0;
+    top: 3.5rem;
+    right: 1rem;
     background-color: #fff;
     color: #000;
     border-radius: 5px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
     padding: 1rem;
     z-index: 10;
-    width: 300px;
+    width: 320px;
+    max-height: 400px;
+    overflow-y: auto;
 }
-.dropdown-h4{
-    
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.cart-item-image {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.cart-total {
+    font-weight: bold;
+    text-align: right;
+    margin-top: 10px;
+}
+
+/* Estilos do botão de remoção */
+.remove-button {
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 0.8rem;
+}
+
+.remove-button:hover {
+    background-color: #d43f3a;
+}
+
+/* Favoritos */
+.favorites-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.favorite-item-image {
+    width: 45px;
+    height: 45px;
+    object-fit: cover;
+    border-radius: 5px;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
     .nav-list {
-        display: none; /* Esconde a navegação */
+        display: none;
     }
 
     .menu-toggle {
-        display: block; /* Mostra o botão "hambúrguer" */
+        display: block;
     }
 
     .nav-list.open {
-        display: flex; /* Exibe a navegação ao abrir o menu */
+        display: flex;
         flex-direction: column;
         position: absolute;
         top: 4rem;
@@ -110,5 +142,12 @@
 
     .nav-item {
         padding: 0.5rem 0;
+    }
+
+    .dropdown-panel {
+        right: 0;
+        width: 100%;
+        max-width: 90%;
+        box-sizing: border-box;
     }
 }
