@@ -19,7 +19,6 @@ public class Game {
         private String imageUrl;
 
         private byte[] image;
-
         // Getters and setters
 
         public String getImageUrl() {

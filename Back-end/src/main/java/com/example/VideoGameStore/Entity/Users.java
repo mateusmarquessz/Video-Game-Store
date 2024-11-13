@@ -15,13 +15,12 @@ public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private byte[] profileImage;
 
     @Transient
     private String imageUrl;
 
-    private String fullName;
+    private String fullname;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -68,7 +67,32 @@ public class Users {
     )
     private List<Game> favorites; // Lista de jogos favoritos
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_cart",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    private List<Game> cart;
+
     // Getters e setters
+
+    public List<Game> getCart() {
+        return cart;
+    }
+
+    public void setCart(List<Game> cart) {
+        this.cart = cart;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
     public Role getRole() {
         return role;
     }
@@ -83,14 +107,6 @@ public class Users {
 
     public void setBio(String bio) {
         this.bio = bio;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
     }
 
     public Long getId() {
