@@ -28,9 +28,9 @@ function GamePage() {
     fetchGame();
   }, [id]);
 
-   // Toggle favorite game
-   const toggleFavorite = async (gameId) => {
-    if (!isAuthenticated || !userId) return; // Verifique se o usuário está autenticado antes de permitir alterar favoritos
+  // Toggle favorite game
+  const toggleFavorite = async (gameId) => {
+    if (!isAuthenticated || !userId) return;
 
     try {
       const token = localStorage.getItem('token');
@@ -38,16 +38,21 @@ function GamePage() {
       if (favorites.includes(gameId)) {
         // DELETE para desfavoritar
         await axios.delete(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { 'Authorization': `Bearer ${token}` },
         });
-        setFavorites((prevFavorites) => prevFavorites.filter(id => id !== gameId));
+        const updatedFavorites = favorites.filter(id => id !== gameId);
+        setFavorites(updatedFavorites);
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Atualiza o localStorage
       } else {
         // POST para favoritar
         await axios.post(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {}, {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { 'Authorization': `Bearer ${token}` },
         });
-        setFavorites((prevFavorites) => [...prevFavorites, gameId]);
+        const updatedFavorites = [...favorites, gameId];
+        setFavorites(updatedFavorites);
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Atualiza o localStorage
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error toggling favorite!", error);
     }
@@ -99,18 +104,21 @@ function GamePage() {
         <div className="game-details">
           <div className='gambiarra'>
             <h1 className='game-name'>{game.name}</h1>
-          <button
-            onClick={(e) => { e.stopPropagation(); toggleFavorite(game.id); }}
-            className="favorite-button-gamepage"
-            aria-label={isFavorite(game.id) ? 'Desfavoritar jogo' : 'Favoritar jogo'}
-            title={isFavorite(game.id) ? 'Desfavoritar' : 'Favoritar'}
-          >
-            {isFavorite(game.id) ? (
-              <FaHeart color="#e58e27" />
-            ) : (
-              <FaRegHeart />
-            )}
-          </button></div>
+            <button
+              className="favorite-button-gamepage" // Usa a mesma classe do botão na MainPage
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleFavorite(game.id);
+              }}
+            >
+              {isFavorite(game.id) ? (
+                <FaHeart color="#e58e27" style={{ borderColor: "#161a1e" }} />
+              ) : (
+                <FaRegHeart />
+              )}
+            </button>
+
+          </div>
           <p className="genre">Gênero: {game.genre}</p>
           <p className="support">Tipo de Suporte: {game.typeOfSupport}</p>
           <p className="price">Preço: R${game.price.toFixed(2)}</p>

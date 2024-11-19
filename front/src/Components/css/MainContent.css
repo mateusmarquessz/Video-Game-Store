@@ -1,10 +1,11 @@
 @import "~slick-carousel/slick/slick.css";
 @import "~slick-carousel/slick/slick-theme.css";
+ 
 
-.main-content {
-  padding: 20px;
+
+.content{
   display: flex;
-  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .featured-game {
@@ -20,6 +21,8 @@
 }
 
 .thumbnail {
+  display: flex;
+  flex-direction: column;
   background-color: #221F1C;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -74,11 +77,6 @@
   margin-top: 24px;
   border-radius: 10px;
   object-fit: cover;
-}
-
-.content {
-  display: flex;
-  flex: 1;
 }
 
 .view-game-button{

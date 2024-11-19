@@ -16,7 +16,6 @@
 }
 
 
-
 /* Container para a imagem e o botão */
 .profile-image-container {
   position: relative;
@@ -109,12 +108,6 @@
 .profile-info textarea {
   height: 100px;
 }
-
-.content {
-  display: flex;
-  flex: 1;
-}
-
 /* UserPage.css */
 
 .logout-button {

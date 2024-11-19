@@ -12,8 +12,3 @@ body {
     height: 100vh;
   }
   
-  .content {
-    display: flex;
-    flex: 1;
-  }
-  

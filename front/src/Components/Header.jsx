@@ -92,6 +92,7 @@ function Header() {
 
       // Atualiza o estado dos favoritos removendo o item localmente
       setFavorites(favorites.filter(game => game.id !== gameId));
+      window.location.reload(); 
     } catch (error) {
       console.error("Error removing item from favorites:", error);
     }

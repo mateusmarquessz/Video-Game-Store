@@ -24,32 +24,14 @@ function MainPage() {
       }
     };
 
-    const fetchFavorites = async () => {
-      if (!isAuthenticated || !userId) return;
-
-      try {
-        const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const favoriteGames = response.data.map(fav => fav.id); // Mapeie apenas os IDs dos jogos favoritados
-        setFavorites(favoriteGames);
-
-        // Armazenar os favoritos no localStorage
-        localStorage.setItem('favorites', JSON.stringify(favoriteGames));
-      } catch (error) {
-        console.error("Error fetching favorites!", error);
-      }
-    };
-
-    fetchGames();
-    fetchFavorites(); // Adiciona o carregamento dos favoritos
+    fetchGames(); // Adiciona o carregamento dos favoritos
   }, [isAuthenticated, userId, token]); // Dependências de autenticação para recarregar os favoritos
 
-  // Carregar os favoritos do localStorage na inicialização
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
     setFavorites(storedFavorites);
-  }, []); // Executa apenas uma vez, quando o componente é montado
+  }, []); // Executa apenas uma vez na montagem do componente.
+  
 
   // Redirect to game page
   const handleRedirect = (gameId) => {
@@ -58,29 +40,34 @@ function MainPage() {
 
   // Toggle favorite game
   const toggleFavorite = async (gameId) => {
-    if (!isAuthenticated || !userId) return; // Verifique se o usuário está autenticado antes de permitir alterar favoritos
-
+    if (!isAuthenticated || !userId) return;
+  
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
       if (favorites.includes(gameId)) {
         // DELETE para desfavoritar
         await axios.delete(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { 'Authorization': `Bearer ${token}` },
         });
-        setFavorites((prevFavorites) => prevFavorites.filter(id => id !== gameId));
+        const updatedFavorites = favorites.filter(id => id !== gameId);
+        setFavorites(updatedFavorites);
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Atualiza o localStorage
       } else {
         // POST para favoritar
         await axios.post(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {}, {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { 'Authorization': `Bearer ${token}` },
         });
-        setFavorites((prevFavorites) => [...prevFavorites, gameId]);
+        const updatedFavorites = [...favorites, gameId];
+        setFavorites(updatedFavorites);
+        localStorage.setItem('favorites', JSON.stringify(updatedFavorites)); // Atualiza o localStorage
       }
+      window.location.reload(); 
     } catch (error) {
       console.error("Error toggling favorite!", error);
     }
   };
-
+  
   // Check if game is favorite
   const isFavorite = (gameId) => {
     return favorites.includes(gameId);
@@ -89,7 +76,7 @@ function MainPage() {
   // Toggle cart
   const toggleCart = async (gameId) => {
     if (!isAuthenticated || !userId) return;
-
+  
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
@@ -104,11 +91,12 @@ function MainPage() {
         });
         setCartItems((prevCart) => [...prevCart, gameId]);
       }
+      window.location.reload();
     } catch (error) {
       console.error("Error toggling Cart!", error);
     }
   };
-
+  
   // Check if game is in cart
   const isInCart = (gameId) => {
     return cartItems.includes(gameId);
@@ -126,12 +114,12 @@ function MainPage() {
   return (
     <div className='content'>
       <div className="main-content">
-        <div className="carousel-container">
+      <div className="carousel-container">
           <Slider {...carouselSettings}>
-            {games.map((game, index) => (
-              <div 
-                className="carousel-slide" 
-                key={index} 
+            {games.slice(0, 3).map((game, index) => (
+              <div
+                className="carousel-slide"
+                key={index}
                 onClick={() => handleRedirect(game.id)}
                 style={{ cursor: 'pointer' }}
               >
@@ -167,7 +155,7 @@ function MainPage() {
               >
                 Adicionar ao Carrinho
               </button>
-              {isAuthenticated && ( // Só exibe o botão de favorito se o usuário estiver autenticado
+              {isAuthenticated && (
                 <button onClick={(e) => { e.stopPropagation(); toggleFavorite(game.id); }} className="favorite-button">
                   {isFavorite(game.id) ? (
                     <FaHeart color="#e58e27" style={{ borderColor: "#161a1e" }} />

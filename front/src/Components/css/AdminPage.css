@@ -1,8 +1,4 @@
-.main-content {
-    padding: 20px;
-  }
-  
-  .featured-game {
+.featured-game {
     margin-bottom: 20px;
   }
   
@@ -15,6 +11,8 @@
   }
   
   .thumbnail{
+    display: flex;
+    flex-direction: column;
     background-color: #1C1C1C;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -25,6 +23,22 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
   
+  }
+  
+
+  .delete-game{
+    padding: 10px;
+  font-size: 16px;
+  background-color: #e58e27;
+  color: #161a1e;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .delete-game button:hover {
+    background-color: #ddd4ca;
+    transform: translateY(-3px);
   }
   
   .thumbnail:hover {
@@ -70,23 +84,6 @@
     border-radius: 10px;
   }
   
-  .content {
-    display: flex;
-    flex: 1;
-  }
-  
 .main-div{
   display: flex;
 }
-
-  .thumbnail h3{
-    
-  }
-  
-  .thumbnail p{
-  
-  }
-  
-  .game-price{
-    
-  }
