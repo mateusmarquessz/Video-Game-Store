@@ -6,6 +6,7 @@ function HomePage() {
   return (
     <>
       <Header /> {/* Renderiza o Header */}
+      <div className='content'>
       <div className="home-page">
         <header className="hero-section">
           <h1>Bem-vindo ao Game Store!</h1>
@@ -32,6 +33,7 @@ function HomePage() {
           <h2>Comece a Explorar</h2>
           <p>Não espere mais! Navegue pela nossa loja e descubra tudo o que temos a oferecer.</p>
         </section>
+      </div>
       </div>
     </>
   );

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Slider from 'react-slick';
-import './css/MainContent.css';
+import './css/MainPage.css';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useAuth } from './AuthContext'; // Importe o contexto de autenticação
 
@@ -103,19 +103,32 @@ function MainPage() {
   };
 
   // Carousel settings
-  const carouselSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1
-  };
-
+    const settings = {
+      dots: true, // Adiciona pontos de navegação
+      infinite: true, // Permite navegação infinita
+      speed: 500, // Tempo de transição
+      slidesToShow: 1, // Número de slides visíveis
+      slidesToScroll: 1, // Número de slides a serem rolados por vez
+      responsive: [
+        {
+          breakpoint: 1024, // Para telas de 1024px ou menores
+          settings: {
+            slidesToShow: 1, // Exibe um slide por vez
+          },
+        },
+        {
+          breakpoint: 600, // Para telas de 600px ou menores
+          settings: {
+            slidesToShow: 1,
+          },
+        },
+      ],
+    };
   return (
     <div className='content'>
       <div className="main-content">
       <div className="carousel-container">
-          <Slider {...carouselSettings}>
+          <Slider {...settings}>
             {games.slice(0, 3).map((game, index) => (
               <div
                 className="carousel-slide"

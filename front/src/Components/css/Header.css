@@ -1,3 +1,4 @@
+/* Estilos Gerais do Header */
 .header {
     display: flex;
     justify-content: space-between;
@@ -6,6 +7,8 @@
     background-color: #1c1c1c;
     color: #9a9a9a;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative; /* Garantir que o header fique acima do conteúdo */
+    z-index: 10; /* Certifica-se de que o header fica no topo */
 }
 
 .navigation {
@@ -51,41 +54,64 @@
     color: #e58e27;
 }
 
-/* Estilos do dropdown */
+/* Estilos do Dropdown */
 .dropdown-panel {
     position: absolute;
     top: 3.5rem;
     right: 1rem;
-    background-color: #fff;
-    color: #000;
-    border-radius: 5px;
-    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    background-color: #2c2c2c;
+    color: #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
     padding: 1rem;
-    z-index: 10;
-    width: 320px;
+    z-index: 20; /* Coloca o dropdown acima de outros elementos */
+    width: 350px;
     max-height: 400px;
     overflow-y: auto;
+    font-family: Arial, sans-serif;
 }
 
+/* Estilos do Carrinho */
 .cart-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    margin-bottom: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cart-item:last-child {
+    border-bottom: none;
 }
 
 .cart-item-image {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 6px;
+    border: 2px solid #e58e27;
+}
+
+.cart-item span {
+    flex: 1;
+    color: #f0f0f0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.cart-item span:last-child {
+    text-align: right;
+    color: #e58e27;
+    font-weight: bold;
 }
 
 .cart-total {
     font-weight: bold;
     text-align: right;
-    margin-top: 10px;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: #eaeaea;
 }
 
 /* Estilos do botão de remoção */
@@ -93,28 +119,74 @@
     background-color: #ff4d4f;
     color: #fff;
     border: none;
-    padding: 4px 8px;
+    padding: 6px 12px;
     cursor: pointer;
-    border-radius: 3px;
-    font-size: 0.8rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
 }
 
 .remove-button:hover {
     background-color: #d43f3a;
+    box-shadow: 0px 4px 10px rgba(212, 63, 58, 0.2);
 }
 
-/* Favoritos */
+/* Estilos para Favoritos */
 .favorites-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.favorite-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.favorite-item:last-child {
+    border-bottom: none;
 }
 
 .favorite-item-image {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
-    border-radius: 5px;
+    border-radius: 6px;
+    border: 2px solid #e58e27;
+}
+
+.favorite-item span {
+    flex: 1;
+    color: #f0f0f0;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.remove-button-favorite {
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.remove-button-favorite:hover {
+    background-color: #d43f3a;
+    box-shadow: 0px 4px 10px rgba(212, 63, 58, 0.2);
+}
+
+/* Mensagem de erro */
+.error-message {
+    color: #ff4d4f;
+    font-size: 0.9rem;
+    text-align: center;
+    margin-top: 10px;
 }
 
 /* Responsividade */
@@ -149,5 +221,18 @@
         width: 100%;
         max-width: 90%;
         box-sizing: border-box;
+        top: 4rem; /* Ajusta a posição do dropdown no topo */
+    }
+
+    .cart-item,
+    .favorite-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .cart-item span:last-child,
+    .favorite-item span:last-child {
+        align-self: flex-end;
+        text-align: right;
     }
 }

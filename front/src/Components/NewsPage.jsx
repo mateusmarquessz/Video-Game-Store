@@ -6,12 +6,12 @@ function NewsPage() {
   const newsArticles = [
     {
       title: "Novo Jogo Lançado: The Legend of Warriors",
-      date: "12 de Setembro de 2024",
+      date: "12 de Outubro de 2024",
       content: "The Legend of Warriors, um RPG altamente esperado, finalmente chegou! Com gráficos impressionantes e uma jogabilidade envolvente, ele promete ser um dos melhores lançamentos do ano."
     },
     {
       title: "Atualização 2.0 de CyberRace",
-      date: "10 de Setembro de 2024",
+      date: "10 de Agosto de 2024",
       content: "A nova atualização de CyberRace traz novas pistas, carros e um modo multiplayer mais dinâmico. Jogadores podem esperar uma experiência de corrida mais imersiva e competitiva."
     },
     {
@@ -36,6 +36,9 @@ function NewsPage() {
           </div>
         ))}
       </div>
+      <div className="ai-disclaimer">
+            <p><strong>Aviso:</strong> As notícias acima foram geradas por Inteligência Artificial como exemplo para fins de estudo.</p>
+          </div>
     </div>
     </div>
     </>

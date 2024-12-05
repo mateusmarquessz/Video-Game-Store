@@ -121,7 +121,7 @@ function UserPage() {
           <div className="profile-header">
             <div className="profile-image-container">
               <img
-                src={userData.imageUrl || defaultProfileImage} // Exibe imagem do usuário ou a padrão
+                src={userData.imageUrl || defaultProfileImage}
                 alt="User"
                 className="profile-image"
               />
