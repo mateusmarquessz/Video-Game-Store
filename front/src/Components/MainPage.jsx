@@ -73,7 +73,6 @@ function MainPage() {
     return favorites.includes(gameId);
   };
 
-  // Toggle cart
   const toggleCart = async (gameId) => {
     if (!isAuthenticated || !userId) return;
   

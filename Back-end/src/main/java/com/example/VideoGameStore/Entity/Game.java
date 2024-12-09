@@ -1,8 +1,11 @@
 package com.example.VideoGameStore.Entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Game {
@@ -17,9 +20,40 @@ public class Game {
 
         @Transient
         private String imageUrl;
-
         private byte[] image;
+
+        @Column(length = 5000)
+        private String systemRequirements;
+        private String ageRating;
+
+        @Column(length = 5000)
+        private String description;
+
         // Getters and setters
+
+        public String getSystemRequirements() {
+                return systemRequirements;
+        }
+
+        public void setSystemRequirements(String systemRequirements) {
+                this.systemRequirements = systemRequirements;
+        }
+
+        public String getAgeRating() {
+                return ageRating;
+        }
+
+        public void setAgeRating(String ageRating) {
+                this.ageRating = ageRating;
+        }
+
+        public String getDescription() {
+                return description;
+        }
+
+        public void setDescription(String description) {
+                this.description = description;
+        }
 
         public String getImageUrl() {
                 return imageUrl;

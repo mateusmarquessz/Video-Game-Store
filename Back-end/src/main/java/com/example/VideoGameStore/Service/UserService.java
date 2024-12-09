@@ -50,7 +50,7 @@ public class UserService {
     }
 
     @Transactional
-    public Users updateUser(long id, Users user) {
+        public Users updateUser(long id, Users user) {
         Optional<Users> existingUserOptional = usersRepository.findById(id);
 
         if (existingUserOptional.isPresent()) {
@@ -147,4 +147,6 @@ public class UserService {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         return Collections.unmodifiableList(new ArrayList<>(user.getCart()));
     }
+
+
 }

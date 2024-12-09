@@ -10,6 +10,7 @@ import UserPage from './Components/UserPage';
 import NewsPage from './Components/NewsPage';
 import HomePage from './Components/HomePage';
 import GamePage from './Components/GamePage';
+import CheckoutPage from './Components/Checkout';
 import './App.css';
 import { AuthProvider, useAuth } from './Components/AuthContext';
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/game/:id" element={<GamePage />} />
           <Route path="/admin" element={<AdminPageWrapper />} />
           <Route path="/GameStore" element={<GameStore />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
         </Routes>
       </Router>
     </AuthProvider>

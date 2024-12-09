@@ -35,6 +35,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/games").permitAll()
                         .requestMatchers(HttpMethod.GET, "/games/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/games").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/games/{id}").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/games/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/users/profile/").authenticated()
                         .requestMatchers(HttpMethod.POST, "/users/{userId}/bio").authenticated()
@@ -46,6 +47,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/users/{userId}/Cart/{gameId}").authenticated()
                         .requestMatchers(HttpMethod.DELETE,"/users/{userId}/Cart/{gameId}").authenticated()
                         .requestMatchers(HttpMethod.GET,"/users/{userId}/Cart").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/users/{userId}/games").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/users/{userId}/games").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/orders/{userId}").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/orders/user/{userId}").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

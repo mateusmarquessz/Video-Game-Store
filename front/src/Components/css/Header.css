@@ -79,7 +79,34 @@
     gap: 10px;
     padding: 10px 0;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
 }
+
+.cart-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    animation: favoriteHoverAnimation 0.5s ease-in-out forwards;
+}
+
+
+/* Animação customizada */
+@keyframes itemHoverAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+
 
 .cart-item:last-child {
     border-bottom: none;
@@ -91,6 +118,7 @@
     object-fit: cover;
     border-radius: 6px;
     border: 2px solid #e58e27;
+    transition: transform 0.3s ease; 
 }
 
 .cart-item span {
@@ -98,6 +126,7 @@
     color: #f0f0f0;
     font-size: 1rem;
     font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .cart-item span:last-child {
@@ -106,12 +135,31 @@
     font-weight: bold;
 }
 
+.cart-item:hover span {
+    color: #ff4d4f;
+}
 .cart-total {
     font-weight: bold;
     text-align: right;
     margin-top: 15px;
     font-size: 1.2rem;
     color: #eaeaea;
+}
+
+/* Botão Finalizar Compra */
+.checkout-button-header {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.checkout-button:hover {
+    background-color: #218838;
 }
 
 /* Estilos do botão de remoção */
@@ -131,64 +179,17 @@
     box-shadow: 0px 4px 10px rgba(212, 63, 58, 0.2);
 }
 
-/* Estilos para Favoritos */
-.favorites-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+.cart-item-count {
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px 10px;
+    font-size: 14px;
+  }
 
-.favorite-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.favorite-item:last-child {
-    border-bottom: none;
-}
-
-.favorite-item-image {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 6px;
-    border: 2px solid #e58e27;
-}
-
-.favorite-item span {
-    flex: 1;
-    color: #f0f0f0;
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.remove-button-favorite {
-    background-color: #ff4d4f;
-    color: #fff;
-    border: none;
-    padding: 6px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
-}
-
-.remove-button-favorite:hover {
-    background-color: #d43f3a;
-    box-shadow: 0px 4px 10px rgba(212, 63, 58, 0.2);
-}
-
-/* Mensagem de erro */
-.error-message {
-    color: #ff4d4f;
-    font-size: 0.9rem;
-    text-align: center;
-    margin-top: 10px;
-}
-
+  
 /* Responsividade */
 @media (max-width: 768px) {
     .nav-list {
@@ -218,10 +219,9 @@
 
     .dropdown-panel {
         right: 0;
-        width: 100%;
-        max-width: 90%;
+        width: 90%;
         box-sizing: border-box;
-        top: 4rem; /* Ajusta a posição do dropdown no topo */
+        top: 4rem;
     }
 
     .cart-item,
@@ -234,5 +234,126 @@
     .favorite-item span:last-child {
         align-self: flex-end;
         text-align: right;
+    }
+
+    .cart-item-image,
+    .favorite-item-image {
+        width: 100%;
+        height: auto;
+    }
+}
+
+
+/* Estilos Gerais do Favorito */
+.favorite-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Transições suaves */
+    position: relative; /* Necessário para animar transformações */
+}
+
+.favorite-item:last-child {
+    border-bottom: none;
+}
+
+/* Animação personalizada no hover */
+.favorite-item:hover {
+    transform: scale(1.05); /* Efeito de aumento de tamanho */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    animation: favoriteHoverAnimation 0.5s ease-in-out forwards; /* Aplica animação personalizada */
+}
+
+/* Animação de transformação */
+@keyframes favoriteHoverAnimation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1.05);
+        opacity: 1;
+    }
+}
+
+/* Estilo da imagem do favorito */
+.favorite-item-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid #e58e27;
+    transition: transform 0.3s ease; /* Transição para transformação */
+}
+
+.favorite-item-image:hover {
+    transform: scale(1.1); /* Efeito de zoom na imagem */
+}
+
+/* Estilo do nome do favorito */
+.favorite-item span {
+    flex: 1;
+    color: #f0f0f0;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.favorite-item:hover span {
+    color: #ff4d4f; /* Muda a cor do texto ao passar o mouse */
+}
+
+/* Estilo do botão */
+.favorite-item button {
+    background-color: #ff4d4f;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.favorite-item button:hover {
+    background-color: #e24447;
+    transform: scale(1.05);
+}
+
+
+/* Título do painel de favoritos */
+.dropdown-h4 {
+    color: #eaeaea;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Responsividade para o Favorito */
+@media (max-width: 768px) {
+    .favorite-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .favorite-item span {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    .favorite-item button {
+        align-self: flex-end;
+        font-size: 0.8rem;
+    }
+
+    .favorite-item-image {
+        width: 100%;
+        height: auto;
     }
 }

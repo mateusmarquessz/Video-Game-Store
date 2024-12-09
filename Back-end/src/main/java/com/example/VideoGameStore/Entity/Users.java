@@ -5,8 +5,10 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Users {
@@ -25,7 +27,7 @@ public class Users {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String username;
 
     @JsonIgnore // Evita que o password seja exposto em respostas JSON
@@ -74,6 +76,7 @@ public class Users {
             inverseJoinColumns = @JoinColumn(name = "game_id")
     )
     private List<Game> cart;
+
 
     // Getters e setters
 

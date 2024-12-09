@@ -1,23 +1,32 @@
 package com.example.VideoGameStore.Service;
 
 import com.example.VideoGameStore.Entity.Game;
+import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Image.ImageUtils;
 import com.example.VideoGameStore.Repository.GameRepository;
+import com.example.VideoGameStore.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
 
     @Autowired
     private GameRepository gameRepository;
+    @Autowired
+    private UsersRepository usersRepository;
+
     public GameService() {
         this.gameRepository = gameRepository;
     }
@@ -59,27 +68,41 @@ public class GameService {
         return null;
     }
 
-    //Update jogo pelo Id
-    public Game updateGame(long id, Game game, MultipartFile file) throws IOException{
+//    //Update jogo pelo Id
+//    public Game updateGame(long id, Game game, MultipartFile file) throws IOException{
+//        Optional<Game> existingGame = gameRepository.findById(id);
+//        if (existingGame.isPresent()) {
+//            Game updatedGame = existingGame.get();
+//            updatedGame.setName(game.getName());
+//            updatedGame.setGenre(game.getGenre());
+//            updatedGame.setTypeOfSupport(game.getTypeOfSupport());
+//            updatedGame.setPrice(game.getPrice());
+//            if (file != null && !file.isEmpty()) {
+//                game.setImage(file.getBytes());
+//            }
+//            updatedGame.setUpdatedAt(LocalDateTime.now());
+//            return gameRepository.save(updatedGame);
+//        } else {
+//            return null;
+//        }
+//    }
+
+    @Transactional
+    public Game updateGame(long id, Game game){
         Optional<Game> existingGame = gameRepository.findById(id);
+
         if (existingGame.isPresent()) {
             Game updatedGame = existingGame.get();
-            updatedGame.setName(game.getName());
-            updatedGame.setGenre(game.getGenre());
-            updatedGame.setTypeOfSupport(game.getTypeOfSupport());
-            updatedGame.setPrice(game.getPrice());
-            if (file != null && !file.isEmpty()) {
-                game.setImage(file.getBytes());
-            }
-            updatedGame.setUpdatedAt(LocalDateTime.now());
+
+            //Atualiza campos do jogo
+            updatedGame.setDescription(game.getDescription());
+            updatedGame.setAgeRating(game.getAgeRating());
+            updatedGame.setSystemRequirements(game.getSystemRequirements());
+
             return gameRepository.save(updatedGame);
         } else {
             return null;
         }
     }
 
-    // Método para buscar jogos com filtros
-    public List<Game> getFilteredGames(List<String> categories, List<String> platforms, Double minPrice, Double maxPrice) {
-        return gameRepository.findGamesByFilters(categories, platforms, minPrice, maxPrice);
-    }
 }

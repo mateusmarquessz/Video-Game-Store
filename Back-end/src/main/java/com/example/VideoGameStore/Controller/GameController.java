@@ -80,44 +80,39 @@ public class GameController {
     }
 
     // Atualiza jogo pelo ID com opção de atualizar a imagem
+//    @PutMapping("/{id}")
+//    public ResponseEntity<Game> updateGame(@PathVariable Long id,
+//                                           @RequestParam("name") String name,
+//                                           @RequestParam("genre") String genre,
+//                                           @RequestParam("typeOfSupport") String typeOfSupport,
+//                                           @RequestParam("price") Double price,
+//                                           @RequestParam(value = "image", required = false) MultipartFile image) {
+//        try {
+//            Game existingGame = gameService.getGameById(id);
+//
+//            existingGame.setName(name);
+//            existingGame.setGenre(genre);
+//            existingGame.setTypeOfSupport(typeOfSupport);
+//            existingGame.setPrice(price);
+//
+//            // Se uma nova imagem foi fornecida, atualiza a imagem
+//            Game updatedGame = gameService.updateGame(id, existingGame, image);
+//            if (updatedGame.getImage() != null) {
+//                String base64Image = convertToBase64String(updatedGame.getImage());
+//                String imageUrl = "data:image/png;base64," + base64Image;
+//                updatedGame.setImageUrl(imageUrl);
+//            }
+//            return new ResponseEntity<>(updatedGame, HttpStatus.OK);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
+
+    //Atualiza dados do Jogo
     @PutMapping("/{id}")
-    public ResponseEntity<Game> updateGame(@PathVariable Long id,
-                                           @RequestParam("name") String name,
-                                           @RequestParam("genre") String genre,
-                                           @RequestParam("typeOfSupport") String typeOfSupport,
-                                           @RequestParam("price") Double price,
-                                           @RequestParam(value = "image", required = false) MultipartFile image) {
-        try {
-            Game existingGame = gameService.getGameById(id);
-
-            existingGame.setName(name);
-            existingGame.setGenre(genre);
-            existingGame.setTypeOfSupport(typeOfSupport);
-            existingGame.setPrice(price);
-
-            // Se uma nova imagem foi fornecida, atualiza a imagem
-            Game updatedGame = gameService.updateGame(id, existingGame, image);
-            if (updatedGame.getImage() != null) {
-                String base64Image = convertToBase64String(updatedGame.getImage());
-                String imageUrl = "data:image/png;base64," + base64Image;
-                updatedGame.setImageUrl(imageUrl);
-            }
-            return new ResponseEntity<>(updatedGame, HttpStatus.OK);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    // Filtros para buscar jogos por categorias e plataformas
-    @GetMapping(params = {"category", "platform"})
-    public ResponseEntity<List<Game>> getAllGames(
-            @RequestParam(required = false) List<String> category,
-            @RequestParam(required = false) List<String> platform,
-            @RequestParam(required = false) Double minPrice,
-            @RequestParam(required = false) Double maxPrice
-    ) {
-        List<Game> games = gameService.getFilteredGames(category, platform, minPrice, maxPrice);
-        return new ResponseEntity<>(games, HttpStatus.OK);
+    public ResponseEntity<Game> updateGame(@PathVariable Long id,@RequestBody Game updatedGame) {
+        Game game = gameService.updateGame(id, updatedGame);
+        return  ResponseEntity.ok(game);
     }
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './css/AdminPage.css';
 import Header from './Header';
@@ -7,6 +8,7 @@ import { useAuth } from './AuthContext'; // Importar o hook de autenticação
 function AdminPage() {
   const { isAuthenticated } = useAuth(); // Obter isAuthenticated do contexto
   const [games, setGames] = useState([]);
+  const navigate = useNavigate();
   const [newGame, setNewGame] = useState({
     name: '',
     genre: '',
@@ -75,7 +77,6 @@ function AdminPage() {
 
     try {
       const token = localStorage.getItem('token');
-
       await axios.delete(`http://localhost:8080/games/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -96,6 +97,12 @@ function AdminPage() {
     }));
   };
 
+     // Função para redirecionar para a página de detalhes do jogo
+     const handleRedirect = (gameId) => {
+      navigate(`/game/${gameId}`);
+    };
+  
+  
   return (
     <>
       <Header/> {/* Usando o componente de cabeçalho */}
@@ -149,7 +156,7 @@ function AdminPage() {
               <p>Nenhum jogo disponível.</p>
             ) : (
               games.map((game) => (
-                <div className="thumbnail" key={game.id}>
+                <div className="thumbnail" key={game.id} onClick={() => handleRedirect(game.id)}>
                   {game.imageUrl && <img src={game.imageUrl} alt={game.name} className="game-image" />}
                   <h3>{game.name}</h3>
                   <p>Gênero: {game.genre}</p>
