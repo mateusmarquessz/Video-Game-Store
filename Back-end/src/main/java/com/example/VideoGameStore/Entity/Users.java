@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Users {
@@ -77,8 +74,30 @@ public class Users {
     )
     private List<Game> cart;
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_purchased_games",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "game_id")
+    )
+    private List<Game> user_purchased_games = new ArrayList<>();
+
 
     // Getters e setters
+    public void userPurchasedGames() {
+        if (cart != null && !cart.isEmpty()) {
+            user_purchased_games.addAll(cart);
+            cart.clear();
+        }
+    }
+
+    public List<Game> getUser_purchased_games() {
+        return user_purchased_games;
+    }
+
+    public void setUser_purchased_games(List<Game> user_purchased_games) {
+        this.user_purchased_games = user_purchased_games;
+    }
 
     public List<Game> getCart() {
         return cart;

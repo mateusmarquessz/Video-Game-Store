@@ -49,8 +49,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET,"/users/{userId}/Cart").authenticated()
                         .requestMatchers(HttpMethod.GET,"/users/{userId}/games").authenticated()
                         .requestMatchers(HttpMethod.POST,"/users/{userId}/games").authenticated()
-                        .requestMatchers(HttpMethod.POST,"/api/orders/{userId}").authenticated()
-                        .requestMatchers(HttpMethod.GET,"/api/orders/user/{userId}").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/users/{userId}/checkout/{gameId}").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/users/{userId}/purchasedGame").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);

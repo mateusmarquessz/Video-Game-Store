@@ -159,7 +159,7 @@ public class UserController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while adding favorite");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while adding cart");
         }
     }
 
@@ -175,4 +175,32 @@ public class UserController {
         }
     }
 
+    @PostMapping("/{userId}/checkout/{gameIds}")
+    public ResponseEntity<String> transferToPurchasedGames(@PathVariable Long userId, @PathVariable String gameIds) {
+        try {
+            String[] gameIdArray = gameIds.split(",");
+            for (String gameId : gameIdArray) {
+                userService.transferToPurchasedGames(userId, Long.parseLong(gameId));
+            }
+            return ResponseEntity.ok("Games transferred to purchased");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
+    }
+
+
+    @GetMapping("/{userId}/purchasedGame")
+    public ResponseEntity<List<Game>> PurchasedGames(@PathVariable Long userId) {
+        try{
+            List<Game> gamesAd = userService.PurchasedGames(userId);
+            return ResponseEntity.ok(gamesAd);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
+

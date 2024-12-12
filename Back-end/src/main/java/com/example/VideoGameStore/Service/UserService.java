@@ -148,5 +148,33 @@ public class UserService {
         return Collections.unmodifiableList(new ArrayList<>(user.getCart()));
     }
 
+    @Transactional
+    public void transferToPurchasedGames(Long userId, Long gameId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
+
+        // Verifica se o jogo está no carrinho antes de transferir
+        if (user.getCart().contains(game)) {
+            // Remove o jogo do carrinho
+            user.getCart().remove(game);
+
+            // Adiciona o jogo à lista de jogos comprados
+            if (!user.getUser_purchased_games().contains(game)) {
+                user.getUser_purchased_games().add(game);
+            }
+
+            // Salva as alterações no banco
+            usersRepository.save(user);
+        } else {
+            throw new RuntimeException("Game not in cart");
+        }
+    }
+
+
+    @Transactional
+    public List<Game> PurchasedGames(long userId){
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not Found"));
+        return Collections.unmodifiableList(new ArrayList<>(user.getUser_purchased_games()));
+    }
 
 }
