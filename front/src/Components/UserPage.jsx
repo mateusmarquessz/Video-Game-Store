@@ -42,7 +42,7 @@ function UserPage() {
       try {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
-        const response = await axios.get(`http://localhost:8080/api/orders/user/${userId}`, {
+        const response = await axios.get(`http://localhost:8080/users/${userId}/purchasedGame`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setGames(response.data);
@@ -155,7 +155,7 @@ function UserPage() {
                 className="change-image-button"
                 onClick={() => document.getElementById('imageInput').click()}
               >
-                Alterar Imagem
+                <i className="fas fa-camera"></i> Alterar Imagem
               </button>
             </div>
             <h1>
@@ -201,9 +201,11 @@ function UserPage() {
                 </label>
               </div>
               <button onClick={editMode ? handleSave : handleEdit} className="edit-button">
-                {editMode ? "Salvar" : "Editar"}
+                <i className={`fas ${editMode ? 'fa-save' : 'fa-edit'}`}></i> {editMode ? "Salvar" : "Editar"}
               </button>
-              <button onClick={handleLogout} className="logout-button">Sair</button>
+              <button onClick={handleLogout} className="logout-button">
+                <i className="fas fa-sign-out-alt"></i> Sair
+              </button>
             </div>
 
             {/* Header para alternar entre jogos adquiridos e favoritos */}
@@ -212,13 +214,13 @@ function UserPage() {
                 className={`tab-button ${activeTab === 'games' ? 'active' : ''}`}
                 onClick={() => setActiveTab('games')}
               >
-                Jogos Adquiridos
+                <i className="fas fa-gamepad"></i> Jogos Adquiridos
               </button>
               <button
                 className={`tab-button ${activeTab === 'favorites' ? 'active' : ''}`}
                 onClick={() => setActiveTab('favorites')}
               >
-                Jogos Favoritos
+                <i className="fas fa-heart"></i> Jogos Favoritos
               </button>
             </div>
 

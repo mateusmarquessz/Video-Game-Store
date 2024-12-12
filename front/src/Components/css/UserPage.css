@@ -173,7 +173,7 @@
 }
 
 .games-section li {
-  background-color: #fff;
+  background-color: #1C1C1C;
   margin: 10px 0;
   padding: 10px;
   border-radius: 5px;
@@ -202,7 +202,11 @@
   padding: 16px;
   background: #2E2E2E;
 }
-
+.favorites-list-Page{
+  background-color: #1C1C1C;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
 .toggle-favorites-button {
   margin-top: 10px;
   padding: 8px 16px;
@@ -333,6 +337,15 @@
   .games-section li {
     font-size: 0.9rem;
   }
+}
+
+.games-section{
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.games-list li{
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
 @media (max-width: 480px) {

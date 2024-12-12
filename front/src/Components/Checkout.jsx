@@ -3,102 +3,82 @@ import './css/Checkout.css';
 import axios from 'axios';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
+import { useCartFavorites } from './CartFavoritesContext'; // Importa o contexto
 
 function CheckoutPage() {
-    const [cartItems, setCartItems] = useState([]);
-    const [cartTotal, setCartTotal] = useState(0);
+    const {
+        cartItems,
+        removeFromCart,
+        fetchCart,
+    } = useCartFavorites(); // Obtém métodos e estados do contexto
+
+    const [selectedGames, setSelectedGames] = useState([]); // Estado local para jogos selecionados
+    const [cartTotal, setCartTotal] = useState(0); // Total calculado
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Função para obter os itens do carrinho
-    const fetchCartItems = async () => {
-        try {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-            const response = await axios.get(`http://localhost:8080/users/${userId}/Cart`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            setCartItems(response.data);
-            const total = response.data.reduce((acc, item) => acc + item.price, 0);
-            setCartTotal(total);
-        } catch (error) {
-            setError('Error fetching cart items. Please try again.');
-            console.error('Error fetching cart items:', error);
-        }
+    // Atualiza os jogos selecionados ao marcar/desmarcar checkboxes
+    const toggleGameSelection = (gameId) => {
+        setSelectedGames((prevState) => {
+            if (prevState.includes(gameId)) {
+                return prevState.filter((id) => id !== gameId);
+            } else {
+                return [...prevState, gameId];
+            }
+        });
     };
 
-    // Função para fazer o checkout
+    // Recalcula o total dos jogos selecionados
+    const calculateTotal = () => {
+        const total = cartItems
+            .filter((item) => selectedGames.includes(item.id))
+            .reduce((acc, item) => acc + item.price, 0);
+        setCartTotal(total);
+    };
+
+    // Finaliza a compra dos jogos selecionados
     const handleCheckout = async () => {
         try {
-            const userId = localStorage.getItem('userId');
             const token = localStorage.getItem('token');
+            const userId = localStorage.getItem('userId');
+            const gameIds = selectedGames.join(',');
 
-            // Envia os itens do carrinho para o backend
-            const gamesToPurchase = cartItems.map(item => ({
-                gameId: item.id,
-                price: item.price,
-            }));
-
-            const response = await axios.post(
-                `http://localhost:8080/api/orders/${userId}`,
-                { games: gamesToPurchase },
+            // Realiza o checkout dos jogos selecionados
+            await axios.post(
+                `http://localhost:8080/users/${userId}/checkout/${gameIds}`,
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 }
             );
-            
-            if (response.data) {
-                alert('Purchase completed successfully!');
-                // Limpar o carrinho no frontend
-                setCartItems([]);
-                setCartTotal(0);
-                // Navegar para página de agradecimento ou algo semelhante
-                navigate('/thank-you');
-            } else {
-                setError('Error during checkout. Please try again.');
-            }
+
+            // Atualiza o estado após o checkout
+            selectedGames.forEach((gameId) => removeFromCart(gameId));
+            setSelectedGames([]); 
+            setCartTotal(0);
+
+            // Redireciona para a página de parabéns pela compra
+            navigate('/congratulationsPurchase');
         } catch (error) {
+            setError('Error completing checkout. Please try again.');
             console.error('Error during checkout:', error);
-            setError('Error during checkout. Please try again.');
         }
     };
 
-    // Função para remover um item do carrinho
-    const handleRemoveItem = async (itemId) => {
-        try {
-            const token = localStorage.getItem('token');
-            const userId = localStorage.getItem('userId');
-
-            // Fazendo a requisição para remover o item do carrinho
-            await axios.delete(`http://localhost:8080/users/${userId}/Cart/${itemId}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            // Atualiza o estado do carrinho após remover o item
-            setCartItems((prevItems) => prevItems.filter(item => item.id !== itemId));
-            const total = cartItems.reduce((acc, item) => acc + item.price, 0);
-            setCartTotal(total);
-        } catch (error) {
-            console.error('Error removing item:', error);
-            setError('Error removing item. Please try again.');
-        }
-    };
-
-    // UseEffect para carregar os itens do carrinho ao montar o componente
     useEffect(() => {
-        fetchCartItems();
-    }, []);
+        fetchCart(); // Garante que os itens do carrinho estão atualizados
+    }, [fetchCart]);
+
+    useEffect(() => {
+        calculateTotal(); // Recalcula o total sempre que os jogos selecionados ou o carrinho mudam
+    }, [selectedGames, cartItems]);
 
     return (
         <>
             <Header />
-            <div className='checkout-content'>
+            <div className="checkout-content">
                 <div className="checkout-container">
                     <h1>Checkout</h1>
                     {error && <p className="error-message">{error}</p>}
@@ -116,9 +96,18 @@ function CheckoutPage() {
                                             <h4>{item.name}</h4>
                                             <p>Price: ${item.price.toFixed(2)}</p>
                                         </div>
+
+                                        <input
+                                            type="checkbox"
+                                            id={`checkbox-${item.id}`}
+                                            checked={selectedGames.includes(item.id)}
+                                            onChange={() => toggleGameSelection(item.id)}
+                                        />
+                                        <label htmlFor={`checkbox-${item.id}`} className="checkbox-custom"></label>
+
                                         <button
                                             className="remove-item-button"
-                                            onClick={() => handleRemoveItem(item.id)}
+                                            onClick={() => removeFromCart(item.id)}
                                         >
                                             Remove
                                         </button>
@@ -127,7 +116,11 @@ function CheckoutPage() {
                             </ul>
                             <div className="checkout-summary">
                                 <h3>Total: ${cartTotal.toFixed(2)}</h3>
-                                <button className="checkout-button" onClick={handleCheckout}>
+                                <button
+                                    className="checkout-button"
+                                    onClick={handleCheckout}
+                                    disabled={selectedGames.length === 0}
+                                >
                                     Finalizar Compra
                                 </button>
                             </div>

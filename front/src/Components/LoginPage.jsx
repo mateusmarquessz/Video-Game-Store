@@ -21,17 +21,17 @@ const LoginPage = () => {
       });
 
       console.log('Login successful:', response.data);
-      
+
       // Atualize o estado de autenticação com token, userId e userRole
       login(response.data.token, response.data.userId, response.data.role); // Adicione o papel aqui
-      
+
       // Verifica se o papel está sendo armazenado corretamente
       console.log('Stored role:', response.data.role); // Console log para verificar o papel
 
       navigate('/'); // Redirecione para a página inicial ou onde desejar
     } catch (error) {
       console.error('There was an error logging in:', error);
-      setError('Email ou senha inválidos.'); 
+      setError('Email ou senha inválidos.');
     }
   };
 
@@ -46,7 +46,8 @@ const LoginPage = () => {
         <h2>Login</h2>
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
-            <label htmlFor="email">Email:</label>
+            <label htmlFor="email">
+              Email:</label>
             <input
               type="email"
               id="email"

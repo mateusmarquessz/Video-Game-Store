@@ -1,6 +1,6 @@
 // src/App.jsx
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'; // Adicione Navigate aqui
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Header from './Components/Header';
 import LoginPage from './Components/LoginPage';
 import RegisterPage from './Components/RegisterPage';
@@ -13,23 +13,26 @@ import GamePage from './Components/GamePage';
 import CheckoutPage from './Components/Checkout';
 import './App.css';
 import { AuthProvider, useAuth } from './Components/AuthContext';
+import { CartFavoritesProvider } from './Components/CartFavoritesContext';
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/UserPage" element={<UserPage />} />
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/game/:id" element={<GamePage />} />
-          <Route path="/admin" element={<AdminPageWrapper />} />
-          <Route path="/GameStore" element={<GameStore />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-        </Routes>
-      </Router>
+      <CartFavoritesProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/UserPage" element={<UserPage />} />
+            <Route path="/news" element={<NewsPage />} />
+            <Route path="/game/:id" element={<GamePage />} />
+            <Route path="/admin" element={<AdminPageWrapper />} />
+            <Route path="/GameStore" element={<GameStore />} />
+            <Route path="/checkout" element={<CheckoutPage />} />
+          </Routes>
+        </Router>
+      </CartFavoritesProvider>
     </AuthProvider>
   );
 }

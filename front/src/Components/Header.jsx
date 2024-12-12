@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import "./css/Header.css";
 import { FiShoppingCart, FiHeart, FiUser, FiMenu } from "react-icons/fi";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext';
-import axios from 'axios';
+import { useCartFavorites } from './CartFavoritesContext';
 
 function Header() {
   const [showPanel, setShowPanel] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
-  const [favorites, setFavorites] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
-  const [error, setError] = useState('');
-  const { isAuthenticated, userId, userRole } = useAuth();
+  const { isAuthenticated, userRole } = useAuth();
+  const { cartItems, favorites, removeFromCart, removeFromFavorites } = useCartFavorites();
   const navigate = useNavigate();
 
   const togglePanel = (panel) => {
@@ -30,87 +28,16 @@ function Header() {
     setMenuOpen(!menuOpen);
   };
 
-  const fetchFavorites = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setFavorites(response.data);
-    } catch (error) {
-      console.error("Error fetching favorites:", error);
-    }
+  const handleRedirect = (gameId) => {
+    navigate(`/game/${gameId}`);
   };
 
-  const toggleCart = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      const response = await axios.get(`http://localhost:8080/users/${userId}/Cart`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setCartItems(response.data);
-    } catch (error) {
-      setError('Error fetching cart items. Please try again.');
-      console.error("Error fetching cart:", error);
-    }
-  };
+  const cartTotal = cartItems.reduce((total, game) => {
+    const price = game.price || 0;
+    return total + price;
+  }, 0);
 
-  const removeFromCart = async (gameId) => {
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
 
-      await axios.delete(`http://localhost:8080/users/${userId}/Cart/${gameId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      setCartItems(cartItems.filter(game => game.id !== gameId));
-    } catch (error) {
-      console.error("Error removing item from cart:", error);
-    }
-  };
-
-  const removeFromFavorites = async (gameId) => {
-    try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-
-      // Envia uma requisição para remover o item dos favoritos no backend
-      await axios.delete(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      // Atualiza o estado dos favoritos removendo o item localmente
-      setFavorites(favorites.filter(game => game.id !== gameId));
-      window.location.reload();
-    } catch (error) {
-      console.error("Error removing item from favorites:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchFavorites();
-      toggleCart();
-    }
-  }, [isAuthenticated, userId]);
-
-     // Função para redirecionar para a página de detalhes do jogo
-     const handleRedirect = (gameId) => {
-      navigate(`/game/${gameId}`);
-    };
-
-  const cartTotal = cartItems.reduce((total, game) => total + game.price, 0);
   return (
     <header className="header">
       <nav className="navigation">
@@ -142,10 +69,13 @@ function Header() {
                   <ul>
                     {cartItems.map(game => (
                       <li key={game.id} className="cart-item" onClick={() => handleRedirect(game.id)}>
-                        <img src={game.imageUrl || `data:image/jpeg;base64,${game.image}`} alt={game.name} className="cart-item-image"  />
+                        <img src={game.imageUrl || `data:image/jpeg;base64,${game.image}`} alt={game.name} className="cart-item-image" />
                         <span>{game.name}</span>
-                        <span>${game.price.toFixed(2)}</span>
-                        <button onClick={() => removeFromCart(game.id)} className="remove-button">Remover</button>
+                        <span>${(game.price || 0).toFixed(2)}</span> {/* Verifique se price é um número válido */}
+                        <button onClick={(e) => {
+                          e.stopPropagation();
+                          removeFromCart(game.id);
+                        }} className="remove-button">Remover</button>
                       </li>
                     ))}
                   </ul>
@@ -154,7 +84,7 @@ function Header() {
                   </div>
                   <button
                     className="checkout-button-header"
-                    onClick={() => navigate('/checkout')} // Redireciona para a página de checkout
+                    onClick={() => navigate('/checkout')}
                   >
                     Finalizar Compra
                   </button>
@@ -177,7 +107,10 @@ function Header() {
                     <li key={game.id} className="favorite-item" onClick={() => handleRedirect(game.id)}>
                       <img src={game.imageUrl || `data:image/jpeg;base64,${game.image}`} alt={game.name} className="favorite-item-image" />
                       <span>{game.name}</span>
-                      <button onClick={() => removeFromFavorites(game.id)} className="remove-button">Remover</button>
+                      <button onClick={(e) => {
+                        e.stopPropagation();
+                        removeFromFavorites(game.id);
+                      }} className="remove-button">Remover</button>
                     </li>
                   ))}
                 </ul>

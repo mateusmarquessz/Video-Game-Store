@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import { useAuth } from "./AuthContext";
+import { useCartFavorites } from "./CartFavoritesContext";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
 import "./css/GamePage.css";
 
-// Mapeamento das classificações com as imagens
 const classificationImages = {
   "Livre": "https://logodownload.org/wp-content/uploads/2017/07/classificacao-livre-logo.png",
   "10": "https://logodownload.org/wp-content/uploads/2017/07/classificacao-10-anos-logo.png",
@@ -17,7 +16,6 @@ const classificationImages = {
   "18": "https://logodownload.org/wp-content/uploads/2017/07/classificacao-18-anos-logo.png",
 };
 
-// Função para pegar a URL da imagem de classificação
 const getClassificationImage = (ageRating) => {
   const classification = ageRating?.match(/\d+/)?.[0] || "Livre";
   return classificationImages[classification] || classificationImages["Livre"];
@@ -25,13 +23,21 @@ const getClassificationImage = (ageRating) => {
 
 function GamePage() {
   const { id } = useParams();
-  const [favorites, setFavorites] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
   const [game, setGame] = useState(null);
   const [error, setError] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // Estado para modo de edição
-  const [editedInfo, setEditedInfo] = useState({}); // Estado para as informações em edição
-  const { isAuthenticated, userId, userRole } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedInfo, setEditedInfo] = useState({});
+  const { isAuthenticated, userRole } = useAuth();
+  const {
+    favorites,
+    cartItems,
+    addToFavorites,
+    removeFromFavorites,
+    addToCart,
+    removeFromCart,
+    isFavorite,
+    isInCart,
+  } = useCartFavorites();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,11 +46,10 @@ function GamePage() {
         const response = await axios.get(`http://localhost:8080/games/${id}`);
         const gameData = response.data;
 
-        // Garantir que systemRequirements seja uma string bem estruturada
         if (typeof gameData.systemRequirements === "string") {
-          gameData.systemRequirements = gameData.systemRequirements.split("\n\n"); // Divide por seções (Mínimos / Recomendados)
+          gameData.systemRequirements = gameData.systemRequirements.split("\n\n");
         } else if (!Array.isArray(gameData.systemRequirements)) {
-          gameData.systemRequirements = []; // Se não for string nem array, inicialize como array vazio
+          gameData.systemRequirements = [];
         }
 
         setGame(gameData);
@@ -62,45 +67,19 @@ function GamePage() {
     fetchGame();
   }, [id]);
 
-  const toggleFavorite = async (gameId) => {
-    if (!isAuthenticated || !userId) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      if (favorites.includes(gameId)) {
-        await axios.delete(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setFavorites(favorites.filter((id) => id !== gameId));
-      } else {
-        await axios.post(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {}, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setFavorites([...favorites, gameId]);
-      }
-    } catch (error) {
-      console.error("Error toggling favorite!", error);
+  const toggleFavorite = (game) => {
+    if (isFavorite(game.id)) {
+      removeFromFavorites(game.id);
+    } else {
+      addToFavorites(game.id);
     }
   };
 
-  const toggleCart = async (gameId) => {
-    if (!isAuthenticated || !userId) return;
-
-    try {
-      const token = localStorage.getItem("token");
-      if (cartItems.includes(gameId)) {
-        await axios.delete(`http://localhost:8080/users/${userId}/Cart/${gameId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCartItems(cartItems.filter((id) => id !== gameId));
-      } else {
-        await axios.post(`http://localhost:8080/users/${userId}/Cart/${gameId}`, {}, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCartItems([...cartItems, gameId]);
-      }
-    } catch (error) {
-      console.error("Error toggling Cart!", error);
+  const toggleCart = (game) => {
+    if (isInCart(game.id)) {
+      removeFromCart(game.id);
+    } else {
+      addToCart(game.id);
     }
   };
 
@@ -114,7 +93,7 @@ function GamePage() {
   const saveChanges = async () => {
     const updatedGameData = {
       ageRating: editedInfo.ageRating,
-      systemRequirements: editedInfo.systemRequirements.join("\n\n"), // Converte de volta para string separada por '\n\n'
+      systemRequirements: editedInfo.systemRequirements.join("\n\n"),
       description: editedInfo.description,
     };
 
@@ -150,10 +129,10 @@ function GamePage() {
               className="favorite-button-gamepage"
               onClick={(e) => {
                 e.stopPropagation();
-                toggleFavorite(game.id);
+                toggleFavorite(game);
               }}
             >
-              {favorites.includes(game.id) ? (
+              {isFavorite(game.id) ? (
                 <FaHeart color="#e58e27" style={{ borderColor: "#161a1e" }} />
               ) : (
                 <FaRegHeart />
@@ -167,10 +146,10 @@ function GamePage() {
             className="buy-button"
             onClick={(e) => {
               e.stopPropagation();
-              toggleCart(game.id);
+              toggleCart(game);
             }}
           >
-            Comprar
+            {isInCart(game.id) ? "Remover do Carrinho" : "Adicionar ao Carrinho"}
           </button>
         </div>
         <div className="additional-info">
