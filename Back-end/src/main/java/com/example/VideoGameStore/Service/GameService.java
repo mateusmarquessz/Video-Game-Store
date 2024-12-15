@@ -1,10 +1,9 @@
 package com.example.VideoGameStore.Service;
 
 import com.example.VideoGameStore.Entity.Game;
-import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Image.ImageUtils;
 import com.example.VideoGameStore.Repository.GameRepository;
-import com.example.VideoGameStore.Repository.UsersRepository;
+import com.example.VideoGameStore.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,11 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -25,7 +21,7 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
     @Autowired
-    private UsersRepository usersRepository;
+    private UserRepository userRepository;
 
     public GameService() {
         this.gameRepository = gameRepository;

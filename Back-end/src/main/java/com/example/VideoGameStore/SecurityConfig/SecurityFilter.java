@@ -1,7 +1,7 @@
 package com.example.VideoGameStore.SecurityConfig;
 
 import com.example.VideoGameStore.Entity.Users;
-import com.example.VideoGameStore.Repository.UsersRepository;
+import com.example.VideoGameStore.Repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     TokenService tokenService;
     @Autowired
-    UsersRepository userRepository;
+    UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -4,7 +4,7 @@ import com.example.VideoGameStore.Entity.Game;
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Image.ImageUtils;
 import com.example.VideoGameStore.Repository.GameRepository;
-import com.example.VideoGameStore.Repository.UsersRepository;
+import com.example.VideoGameStore.Repository.UserRepository;
 import com.example.VideoGameStore.dto.UserDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,19 +23,19 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final GameRepository gameRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UsersRepository usersRepository, PasswordEncoder passwordEncoder, GameRepository gameRepository) {
-        this.usersRepository = usersRepository;
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, GameRepository gameRepository) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.gameRepository = gameRepository;
     }
 
     public Users getUserById(Long userId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         if(user.getProfileImage() != null) {
             String base64Image = ImageUtils.convertToBase64String(user.getProfileImage());
             user.setImageUrl("data:image/jpeg;base64," + base64Image);
@@ -45,13 +45,13 @@ public class UserService {
 
 
     public ResponseEntity<Void> deleteUser(long userId) {
-        usersRepository.deleteById(userId);
+        userRepository.deleteById(userId);
         return ResponseEntity.noContent().build();
     }
 
     @Transactional
         public Users updateUser(long id, Users user) {
-        Optional<Users> existingUserOptional = usersRepository.findById(id);
+        Optional<Users> existingUserOptional = userRepository.findById(id);
 
         if (existingUserOptional.isPresent()) {
             Users existingUser = existingUserOptional.get();
@@ -63,7 +63,7 @@ public class UserService {
             // Adicione outros campos conforme necessário
 
             // Salve o usuário atualizado no banco de dados
-            return usersRepository.save(existingUser);
+            return userRepository.save(existingUser);
         } else {
             return null; // Usuário não encontrado
         }
@@ -72,15 +72,15 @@ public class UserService {
 
     //Cria Profile Image
     public Users saveProfileImage(Long userId, MultipartFile file) throws IOException {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
         if (file != null && !file.isEmpty()) {
             user.setProfileImage(file.getBytes());
         }
-        return usersRepository.save(user);
+        return userRepository.save(user);
     }
 
     public Users getUserByEmail(String email) {
-        return usersRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public void registerFirstManager(UserDTO userDTO) {
@@ -89,34 +89,34 @@ public class UserService {
         user.setEmail(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole(userDTO.getRole());
-        usersRepository.save(user);
+        userRepository.save(user);
     }
 
     @Transactional
     public void addFavoriteGame(Long userId, Long gameId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
         // Verifica se o jogo não está na lista de favoritos do usuário
         if (user.getFavorites().stream().noneMatch(g -> g.getId().equals(gameId))) {
             user.getFavorites().add(game);  // Adiciona o jogo à lista de favoritos
-            usersRepository.save(user);  // Salva o usuário
+            userRepository.save(user);  // Salva o usuário
         }
     }
 
     @Transactional
     public void removeFavoriteGame(Long userId, Long gameId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
         // Remove o jogo da lista de favoritos do usuário
         user.getFavorites().remove(game);
-        usersRepository.save(user);  // Salva o usuário
+        userRepository.save(user);  // Salva o usuário
     }
 
     @Transactional(readOnly = true)
     public List<Game> getFavorites(Long userId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         return Collections.unmodifiableList(new ArrayList<>(user.getFavorites()));
     }
 
@@ -124,33 +124,33 @@ public class UserService {
 
     @Transactional
     public void addCartGame(Long userId, Long gameId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
         if(user.getCart().stream().noneMatch(g -> g.getId().equals(gameId))) {
             user.getCart().add(game);
-            usersRepository.save(user);
+            userRepository.save(user);
         }
     }
 
     @Transactional
     public void removeCartGame(Long userId, Long gameId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
         user.getCart().remove(game);
-        usersRepository.save(user);
+        userRepository.save(user);
     }
 
     @Transactional
     public List<Game> getCart(long userId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         return Collections.unmodifiableList(new ArrayList<>(user.getCart()));
     }
 
     @Transactional
     public void transferToPurchasedGames(Long userId, Long gameId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
         Game game = gameRepository.findById(gameId).orElseThrow(() -> new EntityNotFoundException("Game not found"));
 
         // Verifica se o jogo está no carrinho antes de transferir
@@ -164,7 +164,7 @@ public class UserService {
             }
 
             // Salva as alterações no banco
-            usersRepository.save(user);
+            userRepository.save(user);
         } else {
             throw new RuntimeException("Game not in cart");
         }
@@ -173,7 +173,7 @@ public class UserService {
 
     @Transactional
     public List<Game> PurchasedGames(long userId){
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not Found"));
+        Users user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not Found"));
         return Collections.unmodifiableList(new ArrayList<>(user.getUser_purchased_games()));
     }
 

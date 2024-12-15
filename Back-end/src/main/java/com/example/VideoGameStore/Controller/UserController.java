@@ -2,16 +2,15 @@ package com.example.VideoGameStore.Controller;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Map;
+
 import com.example.VideoGameStore.Entity.Game;
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.GameRepository;
-import com.example.VideoGameStore.Repository.UsersRepository;
+import com.example.VideoGameStore.Repository.UserRepository;
 import com.example.VideoGameStore.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -27,14 +25,14 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     private final GameRepository gameRepository;
 
 
     @Autowired
-    public UserController(UserService userService, UsersRepository usersRepository, GameRepository gameRepository) {
+    public UserController(UserService userService, UserRepository userRepository, GameRepository gameRepository) {
         this.userService = userService;
-        this.usersRepository = usersRepository;
+        this.userRepository = userRepository;
         this.gameRepository = gameRepository;
     }
 
