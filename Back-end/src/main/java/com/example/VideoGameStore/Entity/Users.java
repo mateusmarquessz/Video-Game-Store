@@ -84,12 +84,6 @@ public class Users {
 
 
     // Getters e setters
-    public void userPurchasedGames() {
-        if (cart != null && !cart.isEmpty()) {
-            user_purchased_games.addAll(cart);
-            cart.clear();
-        }
-    }
 
     public List<Game> getUser_purchased_games() {
         return user_purchased_games;
