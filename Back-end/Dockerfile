@@ -18,7 +18,7 @@ RUN ./mvnw dependency:resolve
 
 COPY src src
 
-RUN ./mvnw package -X
+RUN ./mvnw package -Xa
 FROM openjdk:17-jdk-slim
 WORKDIR demo
 COPY --from=build target/*.jar demo.jar
