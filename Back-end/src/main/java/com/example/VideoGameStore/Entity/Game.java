@@ -20,13 +20,15 @@ public class Game {
 
         @Transient
         private String imageUrl;
+
+        @Lob
         private byte[] image;
 
-        @Column(length = 5000)
+        @Column(length = 5000, columnDefinition = "TEXT")
         private String systemRequirements;
         private String ageRating;
 
-        @Column(length = 5000)
+        @Column(length = 5000, columnDefinition = "TEXT")
         private String description;
 
         // Getters and setters
