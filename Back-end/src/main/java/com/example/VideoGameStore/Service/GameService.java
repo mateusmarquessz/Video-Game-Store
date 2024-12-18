@@ -3,7 +3,7 @@ package com.example.VideoGameStore.Service;
 import com.example.VideoGameStore.Entity.Game;
 import com.example.VideoGameStore.Image.ImageUtils;
 import com.example.VideoGameStore.Repository.GameRepository;
-import com.example.VideoGameStore.Repository.UserRepository;
+import com.example.VideoGameStore.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class GameService {
     @Autowired
     private GameRepository gameRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     public GameService() {
         this.gameRepository = gameRepository;

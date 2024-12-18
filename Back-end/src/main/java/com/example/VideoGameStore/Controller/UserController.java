@@ -6,7 +6,7 @@ import java.util.Base64;
 import com.example.VideoGameStore.Entity.Game;
 import com.example.VideoGameStore.Entity.Users;
 import com.example.VideoGameStore.Repository.GameRepository;
-import com.example.VideoGameStore.Repository.UserRepository;
+import com.example.VideoGameStore.Repository.UsersRepository;
 import com.example.VideoGameStore.Service.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +25,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final UsersRepository usersRepository;
     private final GameRepository gameRepository;
 
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository, GameRepository gameRepository) {
+    public UserController(UserService userService, UsersRepository usersRepository, GameRepository gameRepository) {
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.usersRepository = usersRepository;
         this.gameRepository = gameRepository;
     }
 

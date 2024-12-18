@@ -26,6 +26,7 @@ public class Game {
 
         @Column(length = 5000, columnDefinition = "TEXT")
         private String systemRequirements;
+
         private String ageRating;
 
         @Column(length = 5000, columnDefinition = "TEXT")

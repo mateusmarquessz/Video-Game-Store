@@ -1,7 +1,7 @@
 package com.example.VideoGameStore.SecurityConfig;
 
 import com.example.VideoGameStore.Entity.Users;
-import com.example.VideoGameStore.Repository.UserRepository;
+import com.example.VideoGameStore.Repository.UsersRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +23,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             var login = tokenService.validateToken(token);
 
             if (login != null) {
-                Users user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+                Users user = usersRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
                 var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
                 var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);

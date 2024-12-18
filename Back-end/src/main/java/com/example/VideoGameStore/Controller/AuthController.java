@@ -1,7 +1,7 @@
 package com.example.VideoGameStore.Controller;
 
 import com.example.VideoGameStore.Entity.Users;
-import com.example.VideoGameStore.Repository.UserRepository;
+import com.example.VideoGameStore.Repository.UsersRepository;
 import com.example.VideoGameStore.Roles.Role;
 import com.example.VideoGameStore.SecurityConfig.TokenService;
 import com.example.VideoGameStore.dto.LoginRequestDTO;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class AuthController {
-    private final UserRepository repository;
+    private final UsersRepository repository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
