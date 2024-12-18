@@ -11,7 +11,15 @@ const fetchUserData = async (userId, token, setUserData) => {
     const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    setUserData(response.data);
+    console.log("Dados do usuário recebidos:", response.data); // Verifique a resposta aqui
+
+    setUserData({
+      username: response.data.username || "",
+      email: response.data.email || "",
+      bio: response.data.bio || "",
+      fullname: response.data.fullname || "",
+      profileImage: response.data.imageUrl || defaultProfileImage, // Use `imageUrl` se for o campo correto
+    });
   } catch (error) {
     console.error("Erro ao buscar os dados do usuário:", error);
   }
