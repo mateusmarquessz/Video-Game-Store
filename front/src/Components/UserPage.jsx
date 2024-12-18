@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // Função para buscar dados do usuário
-const fetchUserData = async (userId, token, setUserData) => {
+const fetchUserData = async (userId, token, setUserData, defaultProfileImage) => {
   try {
     const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -59,20 +59,20 @@ function UserPage() {
     fullname: "",
     email: "",
     username: "",
-    role:"",
+    role: "",
     bio: "",
   });
   const [games, setGames] = useState([]); // Jogos adquiridos
   const [favorites, setFavorites] = useState([]); // Jogos favoritos
   const [activeTab, setActiveTab] = useState('games'); // Estado para controlar a aba ativa
 
-  const defaultProfileImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU";
+  const defaultProfileImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU"; // Mova isso para aqui
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
-    fetchUserData(userId, token, setUserData);
+    fetchUserData(userId, token, setUserData, defaultProfileImage);
     fetchUserGames(userId, token, setGames);
     fetchUserFavorites(userId, token, setFavorites);
   }, []);
