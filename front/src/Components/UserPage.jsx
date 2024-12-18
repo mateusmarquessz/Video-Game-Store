@@ -11,6 +11,7 @@ const fetchUserData = async (userId, token, setUserData) => {
     const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+    console.log("Dados do usuário:", response.data);
     setUserData(response.data);
   } catch (error) {
     console.error("Erro ao buscar os dados do usuário:", error);
