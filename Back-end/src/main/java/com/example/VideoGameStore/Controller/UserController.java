@@ -44,9 +44,21 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Users> updateUser(@PathVariable Long id, @RequestBody Users updatedUser) {
-        Users user = userService.updateUser(id, updatedUser);
-        return ResponseEntity.ok(user);  // Certifique-se de que o fullname seja retornado
+        try {
+            // Chama o serviço para atualizar o usuário
+            Users updated = userService.updateUser(id, updatedUser);
+
+            // Retorna o usuário atualizado com um status 200 OK
+            return ResponseEntity.ok(updated);
+        } catch (RuntimeException e) {
+            // Caso o usuário não seja encontrado, retorna 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (Exception e) {
+            // Em caso de erro interno, retorna 500
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
+
 
 
 

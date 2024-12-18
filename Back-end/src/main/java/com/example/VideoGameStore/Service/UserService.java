@@ -50,24 +50,30 @@ public class UserService {
     }
 
     @Transactional
-        public Users updateUser(long id, Users user) {
+    public Users updateUser(long id, Users user) {
+        // Tenta encontrar o usuário no banco de dados
         Optional<Users> existingUserOptional = usersRepository.findById(id);
 
         if (existingUserOptional.isPresent()) {
+            // Recupera o usuário existente
             Users existingUser = existingUserOptional.get();
 
-            // Atualize os campos do usuário com os novos dados
+            // Atualiza os campos com os dados recebidos
             existingUser.setFullname(user.getFullname());
             existingUser.setUsername(user.getUsername());
             existingUser.setBio(user.getBio());
-            // Adicione outros campos conforme necessário
+            existingUser.setEmail(user.getEmail()); // Atualiza o campo email
 
-            // Salve o usuário atualizado no banco de dados
-            return usersRepository.save(existingUser);
+            // Salva o usuário atualizado
+            usersRepository.save(existingUser);
+
+            // Recarrega o usuário atualizado do banco para garantir que os dados mais recentes sejam retornados
+            return usersRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         } else {
-            return null; // Usuário não encontrado
+            throw new RuntimeException("User not found");
         }
     }
+
 
 
     //Cria Profile Image
