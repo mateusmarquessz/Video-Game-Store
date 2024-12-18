@@ -46,11 +46,13 @@ function UserPage() {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState({
-    username: "",
-    email: "",
-    bio: "",
-    fullname: "",
+    id: "",
     profileImage: "",
+    fullname: "",
+    email: "",
+    username: "",
+    role:"",
+    bio: "",
   });
   const [games, setGames] = useState([]); // Jogos adquiridos
   const [favorites, setFavorites] = useState([]); // Jogos favoritos
