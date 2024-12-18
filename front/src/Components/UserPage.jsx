@@ -75,6 +75,7 @@ function UserPage() {
     logout();
     navigate('/login');
   };
+
   const handleSave = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -114,10 +115,13 @@ function UserPage() {
           }
         });
 
+        // Verifique se a resposta contém a URL da imagem
+        const updatedProfileImage = response.data.profileImage || defaultProfileImage;
+
         // Atualiza a URL da imagem após a resposta
         setUserData((prevData) => ({
           ...prevData,
-          profileImage: response.data.profileImageURL || "", // Aqui deve estar a URL retornada do backend
+          profileImage: updatedProfileImage.startsWith("http") ? updatedProfileImage : `http://localhost:8080${updatedProfileImage}`,
         }));
 
         alert("Imagem de perfil atualizada com sucesso!");
@@ -127,8 +131,8 @@ function UserPage() {
     }
   };
 
-   // Função para redirecionar para a página de detalhes do jogo
-   const handleRedirect = (gameId) => {
+  // Função para redirecionar para a página de detalhes do jogo
+  const handleRedirect = (gameId) => {
     navigate(`/game/${gameId}`);
   };
 
