@@ -62,7 +62,6 @@ public class UserService {
             existingUser.setFullname(user.getFullname());
             existingUser.setUsername(user.getUsername());
             existingUser.setBio(user.getBio());
-            existingUser.setEmail(user.getEmail()); // Atualiza o campo email
 
             // Salva o usuário atualizado
             usersRepository.save(existingUser);

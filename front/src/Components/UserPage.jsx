@@ -5,6 +5,42 @@ import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// Função para buscar dados do usuário
+const fetchUserData = async (userId, token, setUserData) => {
+  try {
+    const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setUserData(response.data);
+  } catch (error) {
+    console.error("Erro ao buscar os dados do usuário:", error);
+  }
+};
+
+// Função para buscar jogos adquiridos
+const fetchUserGames = async (userId, token, setGames) => {
+  try {
+    const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/${userId}/purchasedGame`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setGames(response.data);
+  } catch (error) {
+    console.error("Erro ao buscar jogos adquiridos:", error);
+  }
+};
+
+// Função para buscar jogos favoritos
+const fetchUserFavorites = async (userId, token, setFavorites) => {
+  try {
+    const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/${userId}/favorites`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    setFavorites(response.data);
+  } catch (error) {
+    console.error("Erro ao buscar jogos favoritos:", error);
+  }
+};
+
 function UserPage() {
   const { logout } = useAuth();
   const navigate = useNavigate();
@@ -20,56 +56,16 @@ function UserPage() {
   const [favorites, setFavorites] = useState([]); // Jogos favoritos
   const [activeTab, setActiveTab] = useState('games'); // Estado para controlar a aba ativa
 
-  // Imagem padrão
   const defaultProfileImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU";
 
-  // Fetch de dados do usuário, jogos adquiridos e favoritos
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUserData(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar os dados do usuário:", error);
-      }
-    };
+    const token = localStorage.getItem('token');
+    const userId = localStorage.getItem('userId');
 
-    const fetchUserGames = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/${userId}/purchasedGame`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setGames(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar jogos adquiridos:", error);
-      }
-    };
-
-    const fetchUserFavorites = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-
-        //const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`, 
-        const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/${userId}/favorites`, 
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setFavorites(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar jogos favoritos:", error);
-      }
-    };
-
-    fetchUserData();
-    fetchUserGames();
-    fetchUserFavorites();
+    // Chama as funções externas para buscar os dados
+    fetchUserData(userId, token, setUserData);
+    fetchUserGames(userId, token, setGames);
+    fetchUserFavorites(userId, token, setFavorites);
   }, []);
 
   const handleEdit = () => setEditMode(!editMode);

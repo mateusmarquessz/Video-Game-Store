@@ -60,8 +60,6 @@ public class UserController {
     }
 
 
-
-
     @GetMapping("/profile/{id}")
     public ResponseEntity<Users> getUserById(@PathVariable Long id) {
         Users user = userService.getUserById(id);
