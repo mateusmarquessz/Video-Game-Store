@@ -11,7 +11,6 @@ const fetchUserData = async (userId, token, setUserData) => {
     const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("Dados do usuário:", response.data);
     setUserData(response.data);
   } catch (error) {
     console.error("Erro ao buscar os dados do usuário:", error);
@@ -63,10 +62,13 @@ function UserPage() {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
-    // Chama as funções externas para buscar os dados
-    fetchUserData(userId, token, setUserData);
-    fetchUserGames(userId, token, setGames);
-    fetchUserFavorites(userId, token, setFavorites);
+    console.log("Token:", token, "User ID:", userId);
+  
+    if (token && userId) {
+      fetchUserData(userId, token, setUserData);
+      fetchUserGames(userId, token, setGames);
+      fetchUserFavorites(userId, token, setFavorites);
+    }
   }, []);
 
   const handleEdit = () => setEditMode(!editMode);
