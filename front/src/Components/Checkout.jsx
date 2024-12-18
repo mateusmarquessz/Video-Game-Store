@@ -45,7 +45,7 @@ function CheckoutPage() {
 
             // Realiza o checkout dos jogos selecionados
             await axios.post(
-                `http://localhost:8080/users/${userId}/checkout/${gameIds}`,
+                `https://video-game-store-aczz.onrender.com/users/${userId}/checkout/${gameIds}`,
                 {},
                 {
                     headers: {
