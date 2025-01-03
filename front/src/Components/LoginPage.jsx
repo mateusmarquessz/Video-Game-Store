@@ -15,7 +15,8 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://video-game-store-aczz.onrender.com/auth/login", {
+      //const response = await axios.post("https://video-game-store-aczz.onrender.com/auth/login"
+      const response = await axios.post("http://localhost:8080/auth/login", {
         email,
         password,
       });

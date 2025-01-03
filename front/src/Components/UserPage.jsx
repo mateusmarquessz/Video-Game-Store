@@ -8,7 +8,7 @@ import axios from 'axios';
 // Função para buscar dados do usuário
 const fetchUserData = async (userId, token, setUserData, defaultProfileImage) => {
   try {
-    const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
+    const response = await axios.get(`https://localhost:8080/users/profile/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     console.log("Dados do usuário recebidos:", response.data); // Verifique os dados aqui
@@ -29,7 +29,7 @@ const fetchUserData = async (userId, token, setUserData, defaultProfileImage) =>
 // Função para buscar jogos adquiridos
 const fetchUserGames = async (userId, token, setGames) => {
   try {
-    const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/${userId}/purchasedGame`, {
+    const response = await axios.get(`https://localhost:8080/users/${userId}/purchasedGame`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setGames(response.data);
@@ -41,7 +41,7 @@ const fetchUserGames = async (userId, token, setGames) => {
 // Função para buscar jogos favoritos
 const fetchUserFavorites = async (userId, token, setFavorites) => {
   try {
-    const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/${userId}/favorites`, {
+    const response = await axios.get(`https://localhost:8080/users/${userId}/favorites`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     setFavorites(response.data);
@@ -97,7 +97,7 @@ function UserPage() {
         fullname: userData.fullname,
       };
 
-      await axios.put(`https://video-game-store-aczz.onrender.com/users/${userId}`, updatedData, {
+      await axios.put(`https://localhost:8080/users/${userId}`, updatedData, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -118,7 +118,7 @@ function UserPage() {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
 
-        const response = await axios.put(`https://video-game-store-aczz.onrender.com/users/${userId}/profile-image`, formData, {
+        const response = await axios.put(`https://localhost:8080/users/${userId}/profile-image`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
@@ -130,7 +130,7 @@ function UserPage() {
         // Atualiza a URL da imagem após a resposta
         setUserData((prevData) => ({
           ...prevData,
-          profileImage: updatedProfileImage.startsWith("http") ? updatedProfileImage : `https://video-game-store-aczz.onrender.com${updatedProfileImage}`,
+          profileImage: updatedProfileImage.startsWith("http") ? updatedProfileImage : `https://localhost:8080${updatedProfileImage}`,
         }));
 
         alert("Imagem de perfil atualizada com sucesso!");

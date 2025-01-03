@@ -22,7 +22,7 @@ function AdminPage() {
     const fetchGames = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get('https://video-game-store-aczz.onrender.com/games', {
+        const response = await axios.get('https://localhost:8080/games', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         setGames(response.data);
@@ -56,7 +56,7 @@ function AdminPage() {
       }
 
       const token = localStorage.getItem('token');
-      const response = await axios.post('https://video-game-store-aczz.onrender.com/games', formData, {
+      const response = await axios.post('https://localhost:8080/games', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -77,7 +77,7 @@ function AdminPage() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`https://video-game-store-aczz.onrender.com/games/${id}`, {
+      await axios.delete(`https://localhost:8080/games/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

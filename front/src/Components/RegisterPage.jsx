@@ -14,7 +14,8 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       // Enviando dados para o back end
-      const response = await axios.post("https://video-game-store-aczz.onrender.com/auth/register", {
+      //const response = await axios.post("https://video-game-store-aczz.onrender.com/auth/register"
+      const response = await axios.post("http://localhost:8080/auth/register" , {
         username,
         email,
         password,
