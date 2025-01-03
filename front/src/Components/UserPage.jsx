@@ -11,14 +11,15 @@ const fetchUserData = async (userId, token, setUserData, defaultProfileImage) =>
     const response = await axios.get(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log("Dados do usuário recebidos:", response.data); // Verifique a resposta aqui
+    console.log("Dados do usuário recebidos:", response.data); // Verifique os dados aqui
 
+    // Garantir que os dados estejam sendo atualizados corretamente
     setUserData({
       username: response.data.username || "",
       email: response.data.email || "",
       bio: response.data.bio || "",
       fullname: response.data.fullname || "",
-      profileImage: response.data.imageUrl || defaultProfileImage, // Use `imageUrl` se for o campo correto
+      profileImage: response.data.imageUrl || defaultProfileImage,
     });
   } catch (error) {
     console.error("Erro ao buscar os dados do usuário:", error);
@@ -54,13 +55,11 @@ function UserPage() {
   const navigate = useNavigate();
   const [editMode, setEditMode] = useState(false);
   const [userData, setUserData] = useState({
-    id: "",
-    profileImage: "",
-    fullname: "",
-    email: "",
     username: "",
-    role: "",
+    email: "",
     bio: "",
+    fullname: "",
+    profileImage: "",
   });
   const [games, setGames] = useState([]); // Jogos adquiridos
   const [favorites, setFavorites] = useState([]); // Jogos favoritos
@@ -72,9 +71,12 @@ function UserPage() {
     const token = localStorage.getItem('token');
     const userId = localStorage.getItem('userId');
 
-    fetchUserData(userId, token, setUserData, defaultProfileImage);
-    fetchUserGames(userId, token, setGames);
-    fetchUserFavorites(userId, token, setFavorites);
+    // Verifique se o token e o userId estão disponíveis antes de fazer a requisição
+    if (token && userId) {
+      fetchUserData(userId, token, setUserData, defaultProfileImage);
+      fetchUserGames(userId, token, setGames);
+      fetchUserFavorites(userId, token, setFavorites);
+    }
   }, []);
 
   const handleEdit = () => setEditMode(!editMode);
@@ -123,7 +125,6 @@ function UserPage() {
           }
         });
 
-        // Verifique se a resposta contém a URL da imagem
         const updatedProfileImage = response.data.profileImage || defaultProfileImage;
 
         // Atualiza a URL da imagem após a resposta
@@ -139,7 +140,6 @@ function UserPage() {
     }
   };
 
-  // Função para redirecionar para a página de detalhes do jogo
   const handleRedirect = (gameId) => {
     navigate(`/game/${gameId}`);
   };
