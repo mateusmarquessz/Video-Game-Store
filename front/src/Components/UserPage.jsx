@@ -4,6 +4,7 @@ import Header from './Header';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
 
+
 // Função para buscar dados do usuário, jogos adquiridos e favoritos
 const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) => {
   try {

@@ -1,92 +1,312 @@
-/* CongratulationsPurchase.css */
-.congratulations-container {
+/* Container principal da página */
+.game-page {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f0f4f8;
+  max-width: 1200px;
+  margin: 20px auto;
   padding: 20px;
+  background-color: #1C1C1C;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  flex-wrap: wrap;
+  gap: 20px;
+  overflow: hidden;
 }
 
-.congratulations-thumbnail {
-  background-color: #221f1c;
-  border-radius: 8px;
-  padding: 30px;
+/* Estilo do título */
+.game-name {
+  color: #ffffff;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: bold;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-transform: capitalize;
+}
+/* Imagem do jogo */
+.game-image {
+  flex: 1;
   max-width: 600px;
   width: 100%;
+  height: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.congratulations-heading {
-  font-size: 2.5rem;
-  color: #fff;
-  margin-bottom: 15px;
-  font-weight: bold;
+.game-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  object-fit: cover;
 }
-
-.congratulations-message {
-  font-size: 1.2rem;
-  color: #ddd;
-  margin-bottom: 30px;
-}
-
-.congratulations-button-container {
+/* Título e botão de favorito */
+.gambiarra {
   display: flex;
-  gap: 20px;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
 }
-
-.congratulations-button {
-  padding: 12px 25px;
+/* Detalhes do jogo */
+.game-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.genre, .support, .price {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  color: #d4d4d4;
+}
+.price {
+  font-weight: bold;
+  color: #e58e27;
+}
+/* Botão de comprar */
+.buy-button {
   background-color: #e58e27;
   color: #161a1e;
   border: none;
-  border-radius: 10px;
-  font-size: 1rem;
+  border-radius: 8px;
+  padding: 12px 20px;
   cursor: pointer;
+  font-size: 1.2rem;
+  margin-top: 20px;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  width: 100%;
+  max-width: 300px;
+  align-self: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+.buy-button:hover {
+  background-color: #f0b968;
+  transform: scale(1.05);
+}
+/* Botão de favorito */
+.favorite-button-gamepage {
+  font-size: 50px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.3s ease;
+  margin-left: auto;
+}
+.favorite-button-gamepage:hover {
+  transform: scale(1.1);
+  color: #e58e27;
+}
+.favorite-button-gamepage:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(229, 142, 39, 0.5);
+}
+/* Informações adicionais */
+.additional-info {
+  flex: 1 1 100%;
+  background-color: #2e2e2e;
+  padding: 20px;
+  border-radius: 10px;
+  color: #d1d1d1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.additional-info h2 {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
-.congratulations-button:hover {
-  background-color: #ddd4ca;
-  transform: translateY(-3px);
+.additional-info p, .additional-info ul {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+
+.additional-info ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+/* Botões de edição */
+.edit-button, .save-button, .cancel-button {
+  background-color: #e58e27;
+  color: #161a1e;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;
+}
+
+.edit-button:hover, .save-button:hover, .cancel-button:hover {
+  background-color: #f0b968;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
-  .congratulations-thumbnail {
-    padding: 20px;
-  }
-
-  .congratulations-heading {
-    font-size: 2rem;
-  }
-
-  .congratulations-message {
-    font-size: 1rem;
-  }
-
-  .congratulations-button-container {
+  .game-page {
     flex-direction: column;
+    align-items: center;
   }
 
-  .congratulations-button {
+  .game-image {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .game-details {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .favorite-button-gamepage {
+    font-size: 40px;
+  }
+
+  .buy-button {
     width: 100%;
-    margin-bottom: 10px;
+    margin-top: 20px;
+  }
+  .additional-info {
+    padding: 15px;
+  }
+  .additional-info h2 {
+    font-size: 1.5rem;
+  }
+  .additional-info p, .additional-info ul {
+    font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .congratulations-heading {
+  .game-name {
     font-size: 1.8rem;
   }
 
-  .congratulations-message {
+  .genre, .support, .price {
+    font-size: 1.1rem;
+  }
+  .favorite-button-gamepage {
+    font-size: 35px;
+  }
+  .additional-info h2 {
+    font-size: 1.3rem;
+  }
+  .additional-info p, .additional-info ul {
     font-size: 0.9rem;
   }
 
-  .congratulations-button {
+  .buy-button {
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+}
+/* Container principal da seção */
+.additional-info {
+  flex: 1 1 100%;
+  background-color: #2e2e2e;
+  padding: 20px;
+  border-radius: 8px;
+  color: #d1d1d1;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+/* Título da seção */
+.additional-info h2 {
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+}
+/* Labels e Inputs */
+.additional-info label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.additional-info input,
+.additional-info textarea {
+  font-size: 1rem;
+  color: #1c1c1c;
+  background-color: #f2f2f2;
+  border: 2px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+.additional-info input:focus,
+.additional-info textarea:focus {
+  border-color: #e58e27;
+  outline: none;
+}
+/* Textarea (multilinha) */
+.additional-info textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+/* Botões de edição */
+.additional-info button {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+/* Botão Salvar */
+.additional-info button:first-of-type {
+  background-color: #27ae60;
+}
+.additional-info button:first-of-type:hover {
+  background-color: #218c54;
+  transform: scale(1.05);
+}
+/* Botão Cancelar */
+.additional-info button:last-of-type {
+  background-color: #c0392b;
+  margin-left: 10px;
+}
+.additional-info button:last-of-type:hover {
+  background-color: #992d22;
+  transform: scale(1.05);
+}
+/* Estilo responsivo para dispositivos menores */
+@media (max-width: 768px) {
+  .additional-info {
+    padding: 15px;
+    gap: 15px;
+  }
+  .additional-info h2 {
+    font-size: 1.5rem;
+  }
+  .additional-info label {
+    font-size: 1rem;
+  }
+  .additional-info input,
+  .additional-info textarea {
     font-size: 0.9rem;
   }
+  .additional-info button {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+}
+.ratingImg{
+  width: 100px;
+  height: auto;
+  margin-right: 15px;
+  vertical-align: middle;
 }
