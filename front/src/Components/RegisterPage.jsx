@@ -8,21 +8,26 @@ const RegisterPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [successMessage, setSuccessMessage] = useState(''); // Novo estado para a mensagem de sucesso
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
       // Enviando dados para o back end
-      const response = await axios.post("https://video-game-store-aczz.onrender.com/auth/register" , {
+      const response = await axios.post("https://video-game-store-aczz.onrender.com/auth/register", {
         username,
         email,
         password,
       });
 
       console.log('User registered:', response.data);
-      // Redirecionar após o registro bem-sucedido
-      navigate('/login');
+      // Exibir a mensagem de sucesso
+      setSuccessMessage('Registro realizado com sucesso! Redirecionando para login...');
+      // Redirecionar após um pequeno delay
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000); // Atraso de 2 segundos para mostrar a mensagem
     } catch (error) {
       console.error('There was an error registering the user:', error);
     }
@@ -71,6 +76,8 @@ const RegisterPage = () => {
           <button type="submit" className="register-button">Registrar</button>
           <button type="button" onClick={handleBackToLogin} className='back'>Voltar</button>
         </form>
+        {/* Exibe a mensagem de sucesso, se existir */}
+        {successMessage && <div className="success-message">{successMessage}</div>}
       </div>
     </div>
   );
