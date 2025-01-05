@@ -3,10 +3,10 @@ import "./css/UserPage.css";
 import Header from './Header';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useCartFavorites } from './CartFavoritesContext';
 
-
-// Função para buscar dados do usuário, jogos adquiridos e favoritos
-const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) => {
+// Função para buscar dados do usuário e jogos adquiridos
+const fetchAllData = async (userId, token, setUserData, setGames) => {
   try {
     // Buscar dados do usuário
     const response = await fetch(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
@@ -36,17 +36,9 @@ const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) 
     });
     const gamesData = await gamesResponse.json();
     setGames(Array.isArray(gamesData) ? gamesData : []);
-
-    // Buscar jogos favoritos
-    const favoritesResponse = await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}/favorites`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const favoritesData = await favoritesResponse.json();
-    setFavorites(Array.isArray(favoritesData) ? favoritesData : []);
   } catch (error) {
     console.error("Erro ao buscar dados:", error);
     setGames([]); // Garantir que esses estados estejam vazios em caso de erro
-    setFavorites([]);
   }
 };
 
@@ -83,7 +75,7 @@ function UserPage() {
   });
   const [profileImage, setProfileImage] = useState(""); // Armazenar a imagem de perfil
   const [games, setGames] = useState([]); // Jogos adquiridos
-  const [favorites, setFavorites] = useState([]); // Jogos favoritos
+  const { favorites, addToFavorites, removeFromFavorites, isFavorite } = useCartFavorites(); // Usando o contexto de favoritos
   const [activeTab, setActiveTab] = useState('games'); // Estado para controlar a aba ativa
 
   useEffect(() => {
@@ -92,7 +84,7 @@ function UserPage() {
 
     // Verifique se o token e o userId estão disponíveis antes de fazer a requisição
     if (token && userId) {
-      fetchAllData(userId, token, setUserData, setGames, setFavorites);
+      fetchAllData(userId, token, setUserData, setGames);
       fetchProfileImage(userId, token, setProfileImage);  // Chama a função para buscar a imagem
     }
   }, []); // Somente executa uma vez ao montar o componente
@@ -163,8 +155,6 @@ function UserPage() {
     navigate(`/game/${gameId}`);
   };
 
-  const userId = localStorage.getItem('userId'); // Obtém o userId
-
   return (
     <>
       <Header />
@@ -206,24 +196,21 @@ function UserPage() {
               <div className="profile-info">
                 <label>
                   Email:
-                  <p>{userData.email}</p> {/* Email fixo, não editável */}
+                  <p>{userData.email}</p>
                 </label>
 
-                {/* Verifique se o userId não é 1 antes de exibir o campo Nome Completo */}
-                {userId !== '1' && (
-                  <label>
-                    Nome Completo:
-                    {editMode ? (
-                      <textarea
-                        name="fullname"
-                        value={userData.fullname}
-                        onChange={handleChange}
-                      />
-                    ) : (
-                      <p>{userData.fullname}</p>
-                    )}
-                  </label>
-                )}
+                <label>
+                  Nome Completo:
+                  {editMode ? (
+                    <textarea
+                      name="fullname"
+                      value={userData.fullname}
+                      onChange={handleChange}
+                    />
+                  ) : (
+                    <p>{userData.fullname}</p>
+                  )}
+                </label>
 
                 <label>
                   Biografia:
@@ -281,15 +268,17 @@ function UserPage() {
                   </ul>
                 </div>
               )}
+
+              {/* Mostrar favoritos */}
               {activeTab === 'favorites' && (
-                <div className="favorites-section">
+                <div className="games-section">
                   <h2>Jogos Favoritos</h2>
-                  <ul className='favorites-list-Page'>
+                  <ul className="favorites-list">
                     {favorites.length === 0 ? (
-                      <p>Você ainda não possui jogos favoritos.</p>
+                      <p>Você ainda não tem jogos favoritos.</p>
                     ) : (
                       favorites.map((game) => (
-                        <li key={game.id} onClick={() => handleRedirect(game.id)}>
+                        <li key={game.id}>
                           <img src={game.imageUrl || `data:image/jpeg;base64,${game.image}`} alt={game.name} className="cart-item-image" />
                           <p>{game.name}</p>
                         </li>
