@@ -118,3 +118,17 @@
 .call-to-action button:focus {
   outline: none;
 }
+
+/* Remover sublinhado dos links */
+a {
+  text-decoration: none;
+}
+
+/* Estilo para links quando estiverem dentro de um componente Link */
+.feature-item a {
+  text-decoration: none;
+}
+
+.feature-item:hover a {
+  text-decoration: none; /* Garante que o efeito de hover não altere isso */
+}

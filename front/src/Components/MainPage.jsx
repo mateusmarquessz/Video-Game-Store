@@ -40,6 +40,23 @@ function MainPage() {
     navigate(`/game/${gameId}`);
   };
 
+  // Redireciona para o login se não estiver autenticado
+  const handleAction = (action, gameId, actionType) => {
+    if (!isAuthenticated) {
+      alert('Você precisa estar logado para adicionar ao carrinho ou aos favoritos.');
+      return navigate('/login'); // Redireciona para a página de login
+    }
+
+    action(gameId);
+
+    // Exemplo de lógica condicional, se necessário
+    if (actionType === 'cart') {
+      isInCart(gameId) ? removeFromCart(gameId) : addToCart(gameId);
+    } else if (actionType === 'favorite') {
+      isFavorite(gameId) ? removeFromFavorites(gameId) : addToFavorites(gameId);
+    }
+  };
+
   // Configurações do carrossel
   const settings = {
     dots: true,
@@ -98,7 +115,7 @@ function MainPage() {
                 className="view-game-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  isInCart(game.id) ? removeFromCart(game.id) : addToCart(game.id);
+                  handleAction(addToCart, game.id, 'cart');
                 }}
               >
                 {isInCart(game.id) ? 'Remover do Carrinho' : 'Adicionar ao Carrinho'}
@@ -107,7 +124,7 @@ function MainPage() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    isFavorite(game.id) ? removeFromFavorites(game.id) : addToFavorites(game.id);
+                    handleAction(addToFavorites, game.id, 'favorite');
                   }}
                   className="favorite-button"
                 >

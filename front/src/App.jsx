@@ -10,6 +10,7 @@ import UserPage from './Components/UserPage';
 import NewsPage from './Components/NewsPage';
 import HomePage from './Components/HomePage';
 import GamePage from './Components/GamePage';
+import RecentGames from './Components/RecentGames';
 import CheckoutPage from './Components/Checkout';
 import CongratulationsPurchase from './Components/congratulationsPurchase'
 import './App.css';
@@ -32,6 +33,7 @@ function App() {
             <Route path="/GameStore" element={<GameStore />} />
             <Route path="/checkout" element={<CheckoutPage />} />
             <Route path="/congratulationsPurchase" element={<CongratulationsPurchase/>} />
+            <Route path="/recentGames" element={<RecentGames/>}/>
           </Routes>
         </Router>
       </CartFavoritesProvider>
