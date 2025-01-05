@@ -15,10 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import static com.example.VideoGameStore.Image.ImageUtils.convertToBase64String;
 
 @Service
 public class UserService {
@@ -34,14 +33,32 @@ public class UserService {
         this.gameRepository = gameRepository;
     }
 
-    public Users getUserById(Long userId) {
+    @Transactional
+    public Map<String, Object> getUserById(Long userId) {
         Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        if(user.getProfileImage() != null) {
-            String base64Image = ImageUtils.convertToBase64String(user.getProfileImage());
-            user.setImageUrl("data:image/jpeg;base64," + base64Image);
-        }
-        return user;
+
+        // Criar o mapa para armazenar os dados específicos
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", user.getId());
+        userData.put("fullname", user.getFullname());
+        userData.put("email", user.getEmail());
+        userData.put("username", user.getUsername());
+        userData.put("role", user.getRole());
+        userData.put("bio", user.getBio());
+        return userData;
     }
+
+    @Transactional
+    public String getProfileImageByUserId(Long userId) {
+        Users user = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (user.getProfileImage() != null) {
+            return convertToBase64String(user.getProfileImage());
+        } else {
+            throw new RuntimeException("Profile image not found");
+        }
+    }
+
 
 
     public ResponseEntity<Void> deleteUser(long userId) {

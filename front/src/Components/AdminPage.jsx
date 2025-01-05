@@ -22,7 +22,7 @@ function AdminPage() {
     const fetchGames = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get('https://localhost:8080/games', {
+        const response = await axios.get('http://localhost:8080/games', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         setGames(response.data);
@@ -30,7 +30,7 @@ function AdminPage() {
         console.error("There was an error fetching the games!", error);
       }
     };
-    
+
     fetchGames();
   }, []);
 
@@ -56,7 +56,7 @@ function AdminPage() {
       }
 
       const token = localStorage.getItem('token');
-      const response = await axios.post('https://localhost:8080/games', formData, {
+      const response = await axios.post('http://localhost:8080/games', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${token}`
@@ -77,7 +77,7 @@ function AdminPage() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`https://localhost:8080/games/${id}`, {
+      await axios.delete(`http://localhost:8080/games/${id}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -97,18 +97,18 @@ function AdminPage() {
     }));
   };
 
-     // Função para redirecionar para a página de detalhes do jogo
-     const handleRedirect = (gameId) => {
-      navigate(`/game/${gameId}`);
-    };
-  
-  
+  // Função para redirecionar para a página de detalhes do jogo
+  const handleRedirect = (gameId) => {
+    navigate(`/game/${gameId}`);
+  };
+
+
   return (
     <>
-      <Header/> {/* Usando o componente de cabeçalho */}
+      <Header /> {/* Usando o componente de cabeçalho */}
       <div className='main-div'>
         <main className="main-content">
-        {isAuthenticated && (
+          {isAuthenticated && (
             <form className="add-game-form" onSubmit={handleAddGame}>
               <h3>Adicionar Novo Jogo</h3>
               <input
@@ -148,7 +148,10 @@ function AdminPage() {
                 name="image"
                 onChange={handleImageChange}
               />
-              <button type="submit" className='add-game'>Adicionar Jogo</button>
+              <button type="submit" className='add-game' 
+              onClick={() => { console.log("Jogo adicionado com sucesso") 
+              window.location.reload(); }}
+              >Adicionar Jogo</button>
             </form>
           )}
           <div className="game-thumbnails">

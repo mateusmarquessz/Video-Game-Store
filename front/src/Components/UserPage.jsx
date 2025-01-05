@@ -3,50 +3,70 @@ import "./css/UserPage.css";
 import Header from './Header';
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
-// Função para buscar dados do usuário
-const fetchUserData = async (userId, token, setUserData, defaultProfileImage) => {
+// Função para buscar dados do usuário, jogos adquiridos e favoritos
+const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) => {
   try {
-    const response = await axios.get(`https://localhost:8080/users/profile/${userId}`, {
-      headers: { Authorization: `Bearer ${token}` },
+    // Buscar dados do usuário
+    const response = await fetch(`http://localhost:8080/users/profile/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
     });
-    console.log("Dados do usuário recebidos:", response.data); // Verifique os dados aqui
 
-    // Garantir que os dados estejam sendo atualizados corretamente
+    if (!response.ok) {
+      throw new Error('Failed to fetch user data');
+    }
+
+    const userData = await response.json();
+
+    // Atualizar os dados do usuário
     setUserData({
-      username: response.data.username || "",
-      email: response.data.email || "",
-      bio: response.data.bio || "",
-      fullname: response.data.fullname || "",
-      profileImage: response.data.imageUrl || defaultProfileImage,
+      username: userData.username || "",
+      email: userData.email || "",
+      bio: userData.bio || "",
+      fullname: userData.fullname || "",
     });
+
+    // Buscar jogos adquiridos
+    const gamesResponse = await fetch(`http://localhost:8080/users/${userId}/purchasedGame`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const gamesData = await gamesResponse.json();
+    setGames(Array.isArray(gamesData) ? gamesData : []);
+
+    // Buscar jogos favoritos
+    const favoritesResponse = await fetch(`http://localhost:8080/users/${userId}/favorites`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const favoritesData = await favoritesResponse.json();
+    setFavorites(Array.isArray(favoritesData) ? favoritesData : []);
   } catch (error) {
-    console.error("Erro ao buscar os dados do usuário:", error);
+    console.error("Erro ao buscar dados:", error);
+    setGames([]); // Garantir que esses estados estejam vazios em caso de erro
+    setFavorites([]);
   }
 };
 
-// Função para buscar jogos adquiridos
-const fetchUserGames = async (userId, token, setGames) => {
+// Função para buscar a imagem de perfil
+const fetchProfileImage = async (userId, token, setProfileImage) => {
   try {
-    const response = await axios.get(`https://localhost:8080/users/${userId}/purchasedGame`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await fetch(`http://localhost:8080/users/${userId}/profile-image`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
     });
-    setGames(response.data);
-  } catch (error) {
-    console.error("Erro ao buscar jogos adquiridos:", error);
-  }
-};
 
-// Função para buscar jogos favoritos
-const fetchUserFavorites = async (userId, token, setFavorites) => {
-  try {
-    const response = await axios.get(`https://localhost:8080/users/${userId}/favorites`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setFavorites(response.data);
+    if (!response.ok) {
+      throw new Error('Failed to fetch profile image');
+    }
+
+    const imageUrl = await response.text();
+    setProfileImage(imageUrl);  // Armazena a imagem em Base64
   } catch (error) {
-    console.error("Erro ao buscar jogos favoritos:", error);
+    console.error("Erro ao buscar imagem de perfil:", error);
   }
 };
 
@@ -59,13 +79,11 @@ function UserPage() {
     email: "",
     bio: "",
     fullname: "",
-    profileImage: "",
   });
+  const [profileImage, setProfileImage] = useState(""); // Armazenar a imagem de perfil
   const [games, setGames] = useState([]); // Jogos adquiridos
   const [favorites, setFavorites] = useState([]); // Jogos favoritos
   const [activeTab, setActiveTab] = useState('games'); // Estado para controlar a aba ativa
-
-  const defaultProfileImage = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU"; // Mova isso para aqui
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -73,11 +91,10 @@ function UserPage() {
 
     // Verifique se o token e o userId estão disponíveis antes de fazer a requisição
     if (token && userId) {
-      fetchUserData(userId, token, setUserData, defaultProfileImage);
-      fetchUserGames(userId, token, setGames);
-      fetchUserFavorites(userId, token, setFavorites);
+      fetchAllData(userId, token, setUserData, setGames, setFavorites);
+      fetchProfileImage(userId, token, setProfileImage);  // Chama a função para buscar a imagem
     }
-  }, []);
+  }, []); // Somente executa uma vez ao montar o componente
 
   const handleEdit = () => setEditMode(!editMode);
   const handleChange = (e) => setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -97,8 +114,13 @@ function UserPage() {
         fullname: userData.fullname,
       };
 
-      await axios.put(`https://localhost:8080/users/${userId}`, updatedData, {
-        headers: { Authorization: `Bearer ${token}` },
+      await fetch(`http://localhost:8080/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
       });
 
       setEditMode(false);
@@ -118,20 +140,16 @@ function UserPage() {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
 
-        const response = await axios.put(`https://localhost:8080/users/${userId}/profile-image`, formData, {
+        const response = await fetch(`http://localhost:8080/users/${userId}/profile-image`, {
+          method: 'PUT',
           headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          }
+            'Authorization': `Bearer ${token}`,
+          },
+          body: formData,
         });
 
-        const updatedProfileImage = response.data.profileImage || defaultProfileImage;
-
-        // Atualiza a URL da imagem após a resposta
-        setUserData((prevData) => ({
-          ...prevData,
-          profileImage: updatedProfileImage.startsWith("http") ? updatedProfileImage : `https://localhost:8080${updatedProfileImage}`,
-        }));
+        const updatedProfileImage = await response.json();
+        setProfileImage(updatedProfileImage.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU");
 
         alert("Imagem de perfil atualizada com sucesso!");
       } catch (error) {
@@ -144,6 +162,8 @@ function UserPage() {
     navigate(`/game/${gameId}`);
   };
 
+  const userId = localStorage.getItem('userId'); // Obtém o userId
+
   return (
     <>
       <Header />
@@ -152,7 +172,7 @@ function UserPage() {
           <div className="profile-header">
             <div className="profile-image-container">
               <img
-                src={userData.profileImage || defaultProfileImage}
+                src={profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU"}
                 alt="User"
                 className="profile-image"
               />
@@ -187,18 +207,23 @@ function UserPage() {
                   Email:
                   <p>{userData.email}</p> {/* Email fixo, não editável */}
                 </label>
-                <label>
-                  Nome Completo:
-                  {editMode ? (
-                    <textarea
-                      name="fullname"
-                      value={userData.fullname}
-                      onChange={handleChange}
-                    />
-                  ) : (
-                    <p>{userData.fullname}</p>
-                  )}
-                </label>
+
+                {/* Verifique se o userId não é 1 antes de exibir o campo Nome Completo */}
+                {userId !== '1' && (
+                  <label>
+                    Nome Completo:
+                    {editMode ? (
+                      <textarea
+                        name="fullname"
+                        value={userData.fullname}
+                        onChange={handleChange}
+                      />
+                    ) : (
+                      <p>{userData.fullname}</p>
+                    )}
+                  </label>
+                )}
+
                 <label>
                   Biografia:
                   {editMode ? (
@@ -273,7 +298,6 @@ function UserPage() {
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </div>

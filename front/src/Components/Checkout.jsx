@@ -15,6 +15,7 @@ function CheckoutPage() {
     const [selectedGames, setSelectedGames] = useState([]); // Estado local para jogos selecionados
     const [cartTotal, setCartTotal] = useState(0); // Total calculado
     const [error, setError] = useState('');
+    const [isFetchingCart, setIsFetchingCart] = useState(true); // Flag para controlar a requisição do carrinho
     const navigate = useNavigate();
 
     // Atualiza os jogos selecionados ao marcar/desmarcar checkboxes
@@ -45,7 +46,7 @@ function CheckoutPage() {
 
             // Realiza o checkout dos jogos selecionados
             await axios.post(
-                `https://localhost:8080/users/${userId}/checkout/${gameIds}`,
+                `http://localhost:8080/users/${userId}/checkout/${gameIds}`,
                 {},
                 {
                     headers: {
@@ -68,8 +69,17 @@ function CheckoutPage() {
     };
 
     useEffect(() => {
-        fetchCart(); // Garante que os itens do carrinho estão atualizados
-    }, [fetchCart]);
+        // Garante que o carrinho é atualizado apenas uma vez
+        if (!isFetchingCart) return;
+
+        const fetchCartData = async () => {
+            setIsFetchingCart(true); // Começa o processo de requisição
+            await fetchCart(); // Garante que os itens do carrinho estão atualizados
+            setIsFetchingCart(false); // Marca o fim da requisição
+        };
+
+        fetchCartData(); // Executa a função de requisição
+    }, [fetchCart, isFetchingCart]); // O useEffect só será executado uma vez
 
     useEffect(() => {
         calculateTotal(); // Recalcula o total sempre que os jogos selecionados ou o carrinho mudam
@@ -119,9 +129,9 @@ function CheckoutPage() {
                                 <button
                                     className="checkout-button"
                                     onClick={handleCheckout}
-                                    disabled={selectedGames.length === 0}
+                                    disabled={selectedGames.length === 0 || isFetchingCart}
                                 >
-                                    Finalizar Compra
+                                    {isFetchingCart ? 'Processing...' : 'Finalizar Compra'}
                                 </button>
                             </div>
                         </div>

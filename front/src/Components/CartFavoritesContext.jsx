@@ -14,7 +14,7 @@ export const CartFavoritesProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
-      const response = await axios.get(`https://localhost:8080/users/${userId}/favorites`, {
+      const response = await axios.get(`http://localhost:8080/users/${userId}/favorites`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFavorites(response.data);
@@ -27,7 +27,7 @@ export const CartFavoritesProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
-      const response = await axios.get(`https://localhost:8080/users/${userId}/Cart`, {
+      const response = await axios.get(`http://localhost:8080/users/${userId}/Cart`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCartItems(response.data);
@@ -47,7 +47,7 @@ export const CartFavoritesProvider = ({ children }) => {
   
     try {
       // Realiza o POST para adicionar o item ao carrinho
-      await axios.post(`https://localhost:8080/users/${userId}/Cart/${gameId}`, null, {
+      await axios.post(`http://localhost:8080/users/${userId}/Cart/${gameId}`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -63,7 +63,7 @@ export const CartFavoritesProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
-      await axios.delete(`https://localhost:8080/users/${userId}/Cart/${gameId}`, {
+      await axios.delete(`http://localhost:8080/users/${userId}/Cart/${gameId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchCart();
@@ -77,7 +77,7 @@ export const CartFavoritesProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
-      await axios.post(`https://localhost:8080/users/${userId}/favorites/${gameId}`, null, {
+      await axios.post(`http://localhost:8080/users/${userId}/favorites/${gameId}`, null, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchFavorites();
@@ -92,7 +92,7 @@ export const CartFavoritesProvider = ({ children }) => {
     try {
       const token = localStorage.getItem('token');
       const userId = localStorage.getItem('userId');
-      await axios.delete(`https://localhost:8080/users/${userId}/favorites/${gameId}`, {
+      await axios.delete(`http://localhost:8080/users/${userId}/favorites/${gameId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       fetchFavorites();

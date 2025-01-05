@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -61,16 +62,22 @@ public class UserController {
 
 
     @GetMapping("/profile/{id}")
-    public ResponseEntity<Users> getUserById(@PathVariable Long id) {
-        Users user = userService.getUserById(id);
-        if (user.getProfileImage() != null) {
-            String base64Image = convertToBase64String(user.getProfileImage());
-            String imageUrl = "data:image/png;base64," + base64Image;
-            user.setImageUrl(imageUrl);
-        }
-
-        return ResponseEntity.ok(user);
+    public ResponseEntity<Map<String, Object>> getUserById(@PathVariable Long id) {
+        Map<String, Object> userData = userService.getUserById(id);
+        return ResponseEntity.ok(userData);
     }
+
+    @GetMapping("/{userId}/profile-image")
+    public ResponseEntity<String> getProfileImage(@PathVariable Long userId) {
+        try {
+            String base64Image = userService.getProfileImageByUserId(userId);
+            String imageUrl = "data:image/jpeg;base64," + base64Image;
+            return ResponseEntity.ok(imageUrl);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Profile image not found");
+        }
+    }
+
 
     @PutMapping("/{userId}/profile-image")
     public ResponseEntity<String> saveProfileImage(
@@ -105,7 +112,6 @@ public class UserController {
         return Base64.getEncoder().encodeToString(imageBytes);
     }
 
-    //Logica de favoritar os jogos
 
     // Adiciona um jogo aos favoritos do usuário
     @PostMapping("/{userId}/favorites/{gameId}")
@@ -183,6 +189,7 @@ public class UserController {
         }
     }
 
+    //Logica da Venda
     @PostMapping("/{userId}/checkout/{gameIds}")
     public ResponseEntity<String> transferToPurchasedGames(@PathVariable Long userId, @PathVariable String gameIds) {
         try {

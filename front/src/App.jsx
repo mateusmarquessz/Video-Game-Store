@@ -11,6 +11,7 @@ import NewsPage from './Components/NewsPage';
 import HomePage from './Components/HomePage';
 import GamePage from './Components/GamePage';
 import CheckoutPage from './Components/Checkout';
+import CongratulationsPurchase from './Components/congratulationsPurchase'
 import './App.css';
 import { AuthProvider, useAuth } from './Components/AuthContext';
 import { CartFavoritesProvider } from './Components/CartFavoritesContext';
@@ -30,6 +31,7 @@ function App() {
             <Route path="/admin" element={<AdminPageWrapper />} />
             <Route path="/GameStore" element={<GameStore />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/congratulationsPurchase" element={<CongratulationsPurchase/>} />
           </Routes>
         </Router>
       </CartFavoritesProvider>
