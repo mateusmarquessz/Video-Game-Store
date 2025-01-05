@@ -23,7 +23,7 @@ function RecentGames() {
     <>
       <Header />
       <div className="recent-games">
-        <h2>Jogos Recentes</h2>
+        <h2>Jogos Recentemente Adicionados</h2>
         <div className="game-list-page">
           {games.map((game) => (
             <div className="game-card-page" key={game.id}>
