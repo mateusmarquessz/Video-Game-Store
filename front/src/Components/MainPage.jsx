@@ -24,7 +24,7 @@ function MainPage() {
   useEffect(() => {
     const fetchGames = async () => {
       try {
-        const response = await fetch('http://localhost:8080/games');
+        const response = await fetch('https://video-game-store-aczz.onrender.com/games');
         const data = await response.json();
         setGames(data);
       } catch (error) {

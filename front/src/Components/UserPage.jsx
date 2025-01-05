@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) => {
   try {
     // Buscar dados do usuário
-    const response = await fetch(`http://localhost:8080/users/profile/${userId}`, {
+    const response = await fetch(`https://video-game-store-aczz.onrender.com/users/profile/${userId}`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -30,14 +30,14 @@ const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) 
     });
 
     // Buscar jogos adquiridos
-    const gamesResponse = await fetch(`http://localhost:8080/users/${userId}/purchasedGame`, {
+    const gamesResponse = await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}/purchasedGame`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const gamesData = await gamesResponse.json();
     setGames(Array.isArray(gamesData) ? gamesData : []);
 
     // Buscar jogos favoritos
-    const favoritesResponse = await fetch(`http://localhost:8080/users/${userId}/favorites`, {
+    const favoritesResponse = await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}/favorites`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const favoritesData = await favoritesResponse.json();
@@ -52,7 +52,7 @@ const fetchAllData = async (userId, token, setUserData, setGames, setFavorites) 
 // Função para buscar a imagem de perfil
 const fetchProfileImage = async (userId, token, setProfileImage) => {
   try {
-    const response = await fetch(`http://localhost:8080/users/${userId}/profile-image`, {
+    const response = await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}/profile-image`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -114,7 +114,7 @@ function UserPage() {
         fullname: userData.fullname,
       };
 
-      await fetch(`http://localhost:8080/users/${userId}`, {
+      await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -140,7 +140,7 @@ function UserPage() {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
 
-        const response = await fetch(`http://localhost:8080/users/${userId}/profile-image`, {
+        const response = await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}/profile-image`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,

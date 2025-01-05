@@ -43,7 +43,7 @@ function GamePage() {
   useEffect(() => {
     const fetchGame = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/games/${id}`);
+        const response = await axios.get(`https://video-game-store-aczz.onrender.com/games/${id}`);
         const gameData = response.data;
 
         if (typeof gameData.systemRequirements === "string") {
@@ -99,7 +99,7 @@ function GamePage() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:8080/games/${game.id}`, updatedGameData, {
+      await axios.put(`https://video-game-store-aczz.onrender.com/games/${game.id}`, updatedGameData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setGame((prev) => ({
