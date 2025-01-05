@@ -31,6 +31,12 @@ Bem-vindo ao **Video Game Store**, um sistema de loja de jogos online desenvolvi
   - **Axios** para requisições HTTP ao backend.
 
 ---
+ ### **O sistema Video Game Store conta com um gestor padrão, que pode ser acessado com o login:**
+
+- **Email**: gestorpadrao@gmail.com.br
+- **Senha**: teste123
+
+Esse gestor tem permissões para gerenciar a plataforma, incluindo a inserção de novos jogos.
 
 ## 🚀 Tecnologias Utilizadas
 
