@@ -18,23 +18,23 @@ const CongratulationsPurchase = () => {
 
   return (
     <>
-     <Header />
-    <div className="congratulations-container">
-      <div className="congratulations-thumbnail">
-        <h1 className="congratulations-heading">Congratulations on Your Purchase!</h1>
-        <p className="congratulations-message">
-          You have successfully purchased a new game. Enjoy your gaming experience!
-        </p>
-        <div className="congratulations-button-container">
-          <button className="congratulations-button" onClick={handleContinueShopping}>
-            Continue Shopping
-          </button>
-          <button className="congratulations-button" onClick={handleGoHome}>
-            Go to Home
-          </button>
+      <Header />
+      <div className="congratulations-container">
+        <div className="congratulations-thumbnail">
+          <h1 className="congratulations-heading">Parabéns pela sua compra!</h1>
+          <p className="congratulations-message">
+            Você comprou um novo jogo com sucesso. Aproveite sua experiência de jogo!
+          </p>
+          <div className="congratulations-button-container">
+            <button className="congratulations-button" onClick={handleContinueShopping}>
+              Continuar comprando
+            </button>
+            <button className="congratulations-button" onClick={handleGoHome}>
+              Ir para a home
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 };
