@@ -128,11 +128,11 @@ function UserPage() {
     if (file) {
       const formData = new FormData();
       formData.append('image', file);
-
+  
       try {
         const token = localStorage.getItem('token');
         const userId = localStorage.getItem('userId');
-
+  
         const response = await fetch(`https://video-game-store-aczz.onrender.com/users/${userId}/profile-image`, {
           method: 'PUT',
           headers: {
@@ -140,16 +140,22 @@ function UserPage() {
           },
           body: formData,
         });
-
-        const updatedProfileImage = await response.json();
-        setProfileImage(updatedProfileImage.profileImage || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgVuh2SE-pI11IgdiiaJhxUdFNrq7zQOYKxEy73m4BuJSpuJ7vm3NtDDzcx2Gs3aciaXU&usqp=CAU");
-
+  
+        if (!response.ok) {
+          throw new Error("Erro ao atualizar a imagem de perfil");
+        }
+  
         alert("Imagem de perfil atualizada com sucesso!");
+  
+        // Recarrega a página após sucesso
+        window.location.reload();
       } catch (error) {
         console.error("Erro ao atualizar a imagem de perfil:", error);
+        alert("Erro ao atualizar a imagem de perfil.");
       }
     }
   };
+  
 
   const handleRedirect = (gameId) => {
     navigate(`/game/${gameId}`);
